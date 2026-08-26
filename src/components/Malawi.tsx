@@ -1,3 +1,5 @@
+import { MapPin, Calendar, Globe } from 'lucide-react';
+
 export function Malawi() {
   return (
     <section id="malawi" className="text-white py-[110px] max-[650px]:py-[80px] bg-[linear-gradient(90deg,rgba(5,47,31,.96),rgba(5,47,31,.58)),url('/lake.png')] bg-center bg-cover">
@@ -12,22 +14,33 @@ export function Malawi() {
             collective responsibility.
           </p>
 
-          <div className="grid grid-cols-2 max-[650px]:grid-cols-1 gap-[12px] mt-[28px]">
-            <div className="p-[18px] border border-white/20 rounded-[15px] bg-white/5">
-              <strong className="block text-[16px]">Lilongwe</strong>
-              <span className="text-white/60 text-[12px]">Host city</span>
+          <div className="flex flex-col sm:flex-row gap-[20px] sm:gap-[32px] mt-[32px] bg-brand-gold text-brand-ink p-[24px] sm:px-[32px] rounded-[16px] shadow-xl max-w-fit">
+            <div className="flex items-start gap-[12px]">
+              <MapPin className="text-brand-ink/80 mt-[2px] flex-none" size={20} />
+              <div>
+                <strong className="block text-[17px] font-extrabold leading-tight">Lilongwe</strong>
+                <span className="text-brand-ink/70 text-[11px] font-bold uppercase tracking-widest block mt-[4px]">Host city</span>
+              </div>
             </div>
-            <div className="p-[18px] border border-white/20 rounded-[15px] bg-white/5">
-              <strong className="block text-[16px]">26–31 Oct</strong>
-              <span className="text-white/60 text-[12px]">2027 conference dates</span>
+            
+            <div className="w-full sm:w-[2px] h-[2px] sm:h-auto bg-brand-ink/10"></div>
+            
+            <div className="flex items-start gap-[12px]">
+              <Calendar className="text-brand-ink/80 mt-[2px] flex-none" size={20} />
+              <div>
+                <strong className="block text-[17px] font-extrabold leading-tight">26–31 Oct</strong>
+                <span className="text-brand-ink/70 text-[11px] font-bold uppercase tracking-widest block mt-[4px]">2027 conference dates</span>
+              </div>
             </div>
-            <div className="p-[18px] border border-white/20 rounded-[15px] bg-white/5">
-              <strong className="block text-[16px]">Malawi</strong>
-              <span className="text-white/60 text-[12px]">Host country</span>
-            </div>
-            <div className="p-[18px] border border-white/20 rounded-[15px] bg-white/5">
-              <strong className="block text-[16px]">uMunthu</strong>
-              <span className="text-white/60 text-[12px]">Community & solidarity</span>
+            
+            <div className="w-full sm:w-[2px] h-[2px] sm:h-auto bg-brand-ink/10"></div>
+            
+            <div className="flex items-start gap-[12px]">
+              <Globe className="text-brand-ink/80 mt-[2px] flex-none" size={20} />
+              <div>
+                <strong className="block text-[17px] font-extrabold leading-tight">Malawi</strong>
+                <span className="text-brand-ink/70 text-[11px] font-bold uppercase tracking-widest block mt-[4px]">Host country</span>
+              </div>
             </div>
           </div>
         </div>
