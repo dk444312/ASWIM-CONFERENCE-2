@@ -1,0 +1,6 @@
+{
+  "name": "IFSW Africa 2027",
+  "description": "Advancing social justice for Africa. Regional conference platform for IFSW Africa 2027.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
