@@ -4,7 +4,7 @@ export function Subcommittee() {
     { name: "Joseph Kalelo", role: "Finance Subcommittee", image: "/subcommittee/Joseph Kalelo.jpg" },
     { name: "Magret Mwale", role: "Registration Subcommittee", image: "/subcommittee/Magret Mwale.jpg" },
     { name: "Itaye Tsogolo", role: "Scientific Subcommittee", image: "/subcommittee/MS Tsogolo.jpg" },
-    { name: "Hard Chatsika", role: "Local Organizing Subcommittee", image: "/subcommittee/MR HARD.jfif" },
+    { name: "Hard Chatsika", role: "Local Organizing Subcommittee", image: "/subcommittee/MR HARD.jpg" },
     { name: "Felix Kakowa", role: "Chairperson", image: "/subcommittee/Felix Kakowa.jpg" }
   ];
 
