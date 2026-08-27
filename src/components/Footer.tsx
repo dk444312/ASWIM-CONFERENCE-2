@@ -15,7 +15,10 @@ export function Footer() {
             <ul className="space-y-[18px]">
               <li className="text-white/60 text-[13px]"><a href="#about" className="hover:text-white transition-colors">About</a></li>
               <li className="text-white/60 text-[13px]"><a href="#programme" className="hover:text-white transition-colors">Programme</a></li>
-              <li className="text-white/60 text-[13px]"><a href="#speakers" className="hover:text-white transition-colors">Speakers</a></li>
+              <li className="text-white/60 text-[13px]"><a href="#ifsw-region" className="hover:text-white transition-colors">IFSW Region</a></li>
+              <li className="text-white/60 text-[13px]"><a href="#subcommittee" className="hover:text-white transition-colors">Subcommittee</a></li>
+              <li className="text-white/60 text-[13px]"><a href="#sponsors" className="hover:text-white transition-colors">Sponsors</a></li>
+              <li className="text-white/60 text-[13px]"><a href="#organizers" className="hover:text-white transition-colors">Organizers</a></li>
             </ul>
           </div>
           <div>
