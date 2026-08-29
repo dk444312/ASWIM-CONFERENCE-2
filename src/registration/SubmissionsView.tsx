@@ -32,10 +32,10 @@ export function SubmissionsView() {
   const reload = () => {
     const list = getStoredRegistrations();
     setSubmissions(list);
-    if (selectedSubmission) {
-      const updated = list.find(s => s.id === selectedSubmission.id);
-      if (updated) setSelectedSubmission(updated);
-    }
+    setSelectedSubmission(current => {
+      if (!current) return null;
+      return list.find(s => s.id === current.id) || null;
+    });
   };
 
   useEffect(() => {

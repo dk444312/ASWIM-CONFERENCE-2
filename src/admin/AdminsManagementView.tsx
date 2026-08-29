@@ -212,15 +212,7 @@ export function AdminsManagementView({
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onOpenCreate}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green hover:bg-emerald-900 text-white text-xs font-extrabold transition-all shadow-xs active:scale-95"
-          >
-            <UserPlus size={16} />
-            <span>Create Registration Admin</span>
-          </button>
-        </div>
+        <div className="flex items-center gap-3" />
       </div>
 
       {/* Toast Feedback */}
@@ -494,20 +486,11 @@ export function AdminsManagementView({
             </div>
             <div className="space-y-1">
               <h3 className="font-extrabold text-base text-gray-900">
-                No Registration Admins Created Yet
+                No Registration Admins Configured
               </h3>
               <p className="text-xs text-gray-500 max-w-md mx-auto">
-                All mock administrator records have been removed. Create official Registration Admin accounts with a unique username and password so staff can authenticate and access the Registration Management Portal.
+                No additional administrative accounts are configured. Please contact the Chief Administrator to provision new registration staff profiles.
               </p>
-            </div>
-            <div className="pt-2">
-              <button
-                onClick={onOpenCreate}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-green hover:bg-emerald-900 text-white text-xs font-extrabold transition-all shadow-xs"
-              >
-                <UserPlus size={16} />
-                <span>Create First Registration Admin</span>
-              </button>
             </div>
           </div>
         )}

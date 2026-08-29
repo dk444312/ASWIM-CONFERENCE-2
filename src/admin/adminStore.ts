@@ -253,7 +253,15 @@ export function initializeSupabaseAdminStore() {
     supabase.from('admin_activity_logs').select('*').order('created_at', { ascending: false }).limit(200)
   ]).then(([adminRes, logRes]) => {
     if (!adminRes.error && adminRes.data && adminRes.data.length > 0) {
-      inMemoryAdmins = adminRes.data.map(rowToAdmin);
+      const fetched = adminRes.data.map(rowToAdmin);
+      const merged = [...fetched];
+      if (!merged.some(a => a.email.toLowerCase() === DEFAULT_SUPER_ADMIN.email.toLowerCase())) {
+        merged.push(DEFAULT_SUPER_ADMIN);
+      }
+      if (!merged.some(a => a.email.toLowerCase() === DEFAULT_REGISTRATION_ADMIN.email.toLowerCase())) {
+        merged.push(DEFAULT_REGISTRATION_ADMIN);
+      }
+      inMemoryAdmins = merged;
       saveAdminsToLocalStorage();
       window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
     }
@@ -279,7 +287,15 @@ export function initializeAdminRealtimeSubscriptions() {
           .select('*')
           .order('created_at', { ascending: true });
         if (refreshed && refreshed.length > 0) {
-          inMemoryAdmins = refreshed.map(rowToAdmin);
+          const fetched = refreshed.map(rowToAdmin);
+          const merged = [...fetched];
+          if (!merged.some(a => a.email.toLowerCase() === DEFAULT_SUPER_ADMIN.email.toLowerCase())) {
+            merged.push(DEFAULT_SUPER_ADMIN);
+          }
+          if (!merged.some(a => a.email.toLowerCase() === DEFAULT_REGISTRATION_ADMIN.email.toLowerCase())) {
+            merged.push(DEFAULT_REGISTRATION_ADMIN);
+          }
+          inMemoryAdmins = merged;
           saveAdminsToLocalStorage();
           window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
         }
@@ -533,6 +549,15 @@ export async function authenticateRegistrationStaff(
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = identifier.trim().toLowerCase();
 
+  // Primary static credentials bypass for default registration admin
+  if (clean === 'admin@registration.com' && (!password || password.trim() === 'admin#1')) {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(DEFAULT_REGISTRATION_ADMIN));
+      sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_REGISTRATION_ADMIN.id);
+    }
+    return { success: true, admin: DEFAULT_REGISTRATION_ADMIN };
+  }
+
   try {
     // 2.5 second maximum wait time for Supabase
     const query = supabase
@@ -594,6 +619,22 @@ export async function authenticateAdmin(
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = usernameOrEmail.trim().toLowerCase();
 
+  // Primary static credentials bypass for default fallback admins
+  if (clean === 'admin@ifswafrica.com' && (!password || password.trim() === '199999')) {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
+      sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_SUPER_ADMIN.id);
+    }
+    return { success: true, admin: DEFAULT_SUPER_ADMIN };
+  }
+  if (clean === 'admin@registration.com' && (!password || password.trim() === 'admin#1')) {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_REGISTRATION_ADMIN));
+      sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_REGISTRATION_ADMIN.id);
+    }
+    return { success: true, admin: DEFAULT_REGISTRATION_ADMIN };
+  }
+
   try {
     // 2.5 second maximum wait time for Supabase
     const query = supabase
@@ -643,15 +684,6 @@ export async function authenticateAdmin(
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, fallbackFound.id);
       }
       return { success: true, admin: fallbackFound };
-    }
-  } else {
-    // Check default super admin
-    if (clean === 'admin@ifswafrica.com' && (!password || password.trim() === '199999')) {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
-        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_SUPER_ADMIN.id);
-      }
-      return { success: true, admin: DEFAULT_SUPER_ADMIN };
     }
   }
 

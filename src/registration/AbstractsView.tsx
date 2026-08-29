@@ -36,21 +36,25 @@ export function AbstractsView() {
   const [reviewNote, setReviewNote] = useState('');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
-  const reload = async () => {
+  const reload = () => {
     const list = getAbstracts();
     setAbstracts(list);
-    if (selectedAbstract) {
-      const updated = list.find(a => a.id === selectedAbstract.id);
-      if (updated) setSelectedAbstract(updated);
-    }
+    setSelectedAbstract(current => {
+      if (!current) return null;
+      return list.find(a => a.id === current.id) || null;
+    });
   };
 
   useEffect(() => {
-    reload();
-    fetchFreshAbstracts().then(setAbstracts);
+    setAbstracts(getAbstracts());
+    fetchFreshAbstracts();
 
-    window.addEventListener('ifsw_abstracts_updated', reload);
-    return () => window.removeEventListener('ifsw_abstracts_updated', reload);
+    const handleUpdate = () => {
+      reload();
+    };
+
+    window.addEventListener('ifsw_abstracts_updated', handleUpdate);
+    return () => window.removeEventListener('ifsw_abstracts_updated', handleUpdate);
   }, []);
 
   const handleUpdateStatus = async (id: string, newStatus: 'accepted' | 'rejected' | 'pending') => {

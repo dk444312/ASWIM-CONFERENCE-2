@@ -37,10 +37,10 @@ export function DelegatesView() {
   const reload = () => {
     const list = getStoredRegistrations();
     setDelegates(list);
-    if (selectedDelegate) {
-      const updatedSelected = list.find(d => d.id === selectedDelegate.id);
-      if (updatedSelected) setSelectedDelegate(updatedSelected);
-    }
+    setSelectedDelegate(current => {
+      if (!current) return null;
+      return list.find(d => d.id === current.id) || null;
+    });
   };
 
   useEffect(() => {
