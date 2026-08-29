@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   Lock, 
@@ -20,6 +20,9 @@ export function RegistrationLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Use a ref to prevent multiple rapid submission navigations that trigger Chromium IPC throttling
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     const current = getAuthenticatedStaff();
@@ -30,22 +33,27 @@ export function RegistrationLoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current || isLoading) return;
+
     setError(null);
     setIsLoading(true);
+    isSubmittingRef.current = true;
 
     try {
       const result = await authenticateRegistrationStaff(identifier, password);
 
       if (!result.success) {
         setIsLoading(false);
+        isSubmittingRef.current = false;
         setError(result.error || 'Invalid credentials.');
         return;
       }
 
-      setIsLoading(false);
+      // Keep isLoading true to prevent further inputs during navigation redirect
       navigate('/registration/dashboard', { replace: true });
     } catch (err: any) {
       setIsLoading(false);
+      isSubmittingRef.current = false;
       setError('An error occurred during staff authentication. Please try again.');
     }
   };
@@ -135,11 +143,12 @@ export function RegistrationLoginPage() {
                       type="text"
                       required
                       autoFocus
+                      disabled={isLoading}
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
                       placeholder="Username or email"
                       autoComplete="username"
-                      className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#0d4e32] focus:border-[#0d4e32] transition-all"
+                      className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#0d4e32] focus:border-[#0d4e32] transition-all disabled:bg-gray-50 disabled:text-gray-500"
                     />
                   </div>
                 </div>
@@ -161,11 +170,12 @@ export function RegistrationLoginPage() {
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       required
+                      disabled={isLoading}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Password"
                       autoComplete="current-password"
-                      className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#0d4e32] focus:border-[#0d4e32] transition-all"
+                      className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#0d4e32] focus:border-[#0d4e32] transition-all disabled:bg-gray-50 disabled:text-gray-500"
                     />
                     <button
                       type="button"
