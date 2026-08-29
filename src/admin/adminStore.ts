@@ -82,11 +82,25 @@ export const DEFAULT_SUPER_ADMIN: RegistrationAdmin = {
 const AUTH_STAFF_SESSION_KEY = 'ifsw_session_staff';
 const AUTH_ADMIN_SESSION_KEY = 'ifsw_session_admin';
 const CURRENT_ACTIVE_ADMIN_KEY = 'ifsw_current_admin_id';
+const LOCAL_ADMINS_CACHE_KEY = 'ifsw_admins_cache';
 
 // In-memory runtime state synced with Supabase
 let inMemoryAdmins: RegistrationAdmin[] = [DEFAULT_SUPER_ADMIN];
 let inMemoryLogs: AdminActivityLog[] = [];
 let isAdminsStoreInitialized = false;
+let isRealtimeInitialized = false;
+
+// Helper: Safety Timer for Network Requests
+async function queryWithTimeout<T>(promise: Promise<T>, ms = 2500): Promise<T | null> {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const timeoutPromise = new Promise<null>((resolve) => {
+    timeoutId = setTimeout(() => resolve(null), ms);
+  });
+
+  const result = await Promise.race([promise, timeoutPromise]);
+  clearTimeout(timeoutId!);
+  return result;
+}
 
 export function rowToAdmin(row: any): RegistrationAdmin {
   let perms: string[] = [];
@@ -159,8 +173,6 @@ export function rowToLog(row: any): AdminActivityLog {
   };
 }
 
-const LOCAL_ADMINS_CACHE_KEY = 'ifsw_admins_cache';
-
 export function saveAdminsToLocalStorage() {
   if (typeof window !== 'undefined' && window.localStorage) {
     try {
@@ -188,39 +200,37 @@ export function loadAdminsFromLocalStorage() {
   }
 }
 
-export async function initializeSupabaseAdminStore() {
+export function initializeSupabaseAdminStore() {
   if (isAdminsStoreInitialized) return;
   isAdminsStoreInitialized = true;
 
-  // Pre-load from local cache to provide instant offline/fallback accounts
+  // Pre-load from local cache instantly for offline/fallback accounts
   loadAdminsFromLocalStorage();
 
-  try {
-    // 1. Fetch all admins from Supabase
-    const { data: adminRows, error: adminErr } = await supabase
-      .from('admins')
-      .select('*')
-      .order('created_at', { ascending: true });
-
-    if (!adminErr && adminRows && adminRows.length > 0) {
-      inMemoryAdmins = adminRows.map(rowToAdmin);
+  // Fetch data in the background without blocking the main application thread
+  Promise.all([
+    supabase.from('admins').select('*').order('created_at', { ascending: true }),
+    supabase.from('admin_activity_logs').select('*').order('created_at', { ascending: false }).limit(200)
+  ]).then(([adminRes, logRes]) => {
+    if (!adminRes.error && adminRes.data && adminRes.data.length > 0) {
+      inMemoryAdmins = adminRes.data.map(rowToAdmin);
       saveAdminsToLocalStorage();
       window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
     }
-
-    // 2. Fetch all activity logs from Supabase
-    const { data: logRows, error: logErr } = await supabase
-      .from('admin_activity_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(200);
-
-    if (!logErr && logRows) {
-      inMemoryLogs = logRows.map(rowToLog);
+    
+    if (!logRes.error && logRes.data) {
+      inMemoryLogs = logRes.data.map(rowToLog);
       window.dispatchEvent(new CustomEvent('ifsw_admin_logs_updated'));
     }
+  }).catch(e => console.error('Background fetch error:', e));
+}
 
-    // Realtime Supabase Channels
+// Call this ONLY when the user is actually on the dashboard to save resources
+export function initializeAdminRealtimeSubscriptions() {
+  if (isRealtimeInitialized) return;
+  isRealtimeInitialized = true;
+
+  try {
     supabase
       .channel('public:admins_realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'admins' }, async () => {
@@ -247,11 +257,11 @@ export async function initializeSupabaseAdminStore() {
       })
       .subscribe();
   } catch (e) {
-    console.error('Error initializing Supabase Admin Store:', e);
+    console.error('Error initializing Realtime Subscriptions:', e);
   }
 }
 
-// Run initial admin fetch
+// Run initial background fetch
 initializeSupabaseAdminStore();
 
 export function getRegistrationAdmins(): RegistrationAdmin[] {
@@ -292,15 +302,13 @@ export async function createRegistrationAdmin(data: {
   const cleanUsername = data.username.trim().toLowerCase();
   const cleanEmail = data.email.trim().toLowerCase();
 
-  // Check username uniqueness in local memory first
   if (inMemoryAdmins.some(a => a.username.toLowerCase() === cleanUsername)) {
-    return { success: false, error: `Username "${data.username.trim()}" is already taken. Please choose another username.` };
+    return { success: false, error: `Username "${data.username.trim()}" is already taken.` };
   }
   if (inMemoryAdmins.some(a => a.email.toLowerCase() === cleanEmail)) {
-    return { success: false, error: `Email address "${data.email.trim()}" is already registered to an admin.` };
+    return { success: false, error: `Email address "${data.email.trim()}" is already registered.` };
   }
 
-  // Calculate sequential ID
   const idNumbers = inMemoryAdmins
     .map(a => {
       const match = a.id.match(/\d+$/);
@@ -344,23 +352,17 @@ export async function createRegistrationAdmin(data: {
     accessPin: data.accessPin?.trim() || '1234'
   };
 
-  // Optimistic memory update
   inMemoryAdmins = [...inMemoryAdmins, newAdmin];
   saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
-  // Insert into Supabase
   try {
     const row = adminToRow(newAdmin);
-    const { error } = await supabase.from('admins').insert([row]);
-    if (error) {
-      console.error('Supabase error inserting admin:', error);
-    }
+    await supabase.from('admins').insert([row]);
   } catch (err) {
     console.error('Failed to create admin in Supabase:', err);
   }
 
-  // Log activity
   const activeAdmin = getCurrentActiveAdmin();
   logAdminActivity({
     adminId: activeAdmin.id,
@@ -372,7 +374,7 @@ export async function createRegistrationAdmin(data: {
     category: 'admins',
     targetId: newAdmin.id,
     targetName: newAdmin.name,
-    details: `Created admin username "${newAdmin.username}" with email "${newAdmin.email}" and role "${newAdmin.role}" in Supabase.`
+    details: `Created admin username "${newAdmin.username}" with email "${newAdmin.email}"`
   });
 
   return { success: true, admin: newAdmin };
@@ -397,7 +399,6 @@ export async function updateRegistrationAdmin(
   saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
-  // Update in Supabase
   try {
     const row = adminToRow(updatedAdmin);
     await supabase.from('admins').update(row).eq('id', id);
@@ -416,7 +417,7 @@ export async function updateRegistrationAdmin(
     category: 'admins',
     targetId: updatedAdmin.id,
     targetName: updatedAdmin.name,
-    details: `Profile and permissions updated in Supabase.`
+    details: `Profile and permissions updated.`
   });
 
   return { success: true, admin: updatedAdmin };
@@ -424,9 +425,7 @@ export async function updateRegistrationAdmin(
 
 export async function toggleAdminStatus(id: string): Promise<{ success: boolean; newStatus?: 'active' | 'suspended'; error?: string }> {
   const index = inMemoryAdmins.findIndex(a => a.id === id);
-  if (index === -1) {
-    return { success: false, error: 'Admin not found.' };
-  }
+  if (index === -1) return { success: false, error: 'Admin not found.' };
 
   const admin = inMemoryAdmins[index];
   const newStatus: 'active' | 'suspended' = admin.status === 'active' ? 'suspended' : 'active';
@@ -451,7 +450,7 @@ export async function toggleAdminStatus(id: string): Promise<{ success: boolean;
     category: 'admins',
     targetId: admin.id,
     targetName: admin.name,
-    details: `Admin account status transitioned to ${newStatus} in Supabase.`
+    details: `Admin account status transitioned to ${newStatus}.`
   });
 
   return { success: true, newStatus };
@@ -459,9 +458,7 @@ export async function toggleAdminStatus(id: string): Promise<{ success: boolean;
 
 export async function deleteRegistrationAdmin(id: string): Promise<{ success: boolean; error?: string }> {
   const admin = inMemoryAdmins.find(a => a.id === id);
-  if (!admin) {
-    return { success: false, error: 'Admin not found.' };
-  }
+  if (!admin) return { success: false, error: 'Admin not found.' };
 
   inMemoryAdmins = inMemoryAdmins.filter(a => a.id !== id);
   saveAdminsToLocalStorage();
@@ -484,28 +481,29 @@ export async function deleteRegistrationAdmin(id: string): Promise<{ success: bo
     category: 'admins',
     targetId: id,
     targetName: admin.name,
-    details: `Admin record permanently removed from Supabase.`
+    details: `Admin record permanently removed.`
   });
 
   return { success: true };
 }
 
-// Authentication methods verified against Supabase
 export async function authenticateRegistrationStaff(
   identifier: string,
   password?: string
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = identifier.trim().toLowerCase();
-  
-  // 1. Primary check: Query live Supabase
+
   try {
-    const { data: rows } = await supabase
+    // 2.5 second maximum wait time for Supabase
+    const query = supabase
       .from('admins')
       .select('*')
       .or(`email.ilike.${clean},username.ilike.${clean}`);
+      
+    const response = await queryWithTimeout(query, 2500);
 
-    if (rows && rows.length > 0) {
-      const found = rowToAdmin(rows[0]);
+    if (response && response.data && response.data.length > 0) {
+      const found = rowToAdmin(response.data[0]);
       if (found.status === 'suspended') {
         return { success: false, error: 'This staff account has been suspended by the Executive Administrator.' };
       }
@@ -518,23 +516,18 @@ export async function authenticateRegistrationStaff(
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
       }
       
-      // Update in-memory cache to stay in sync
       const index = inMemoryAdmins.findIndex(a => a.id === found.id);
-      if (index !== -1) {
-        inMemoryAdmins[index] = found;
-      } else {
-        inMemoryAdmins = [...inMemoryAdmins, found];
-      }
+      if (index !== -1) inMemoryAdmins[index] = found;
+      else inMemoryAdmins.push(found);
       saveAdminsToLocalStorage();
-      window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
       return { success: true, admin: found };
     }
   } catch (err) {
-    console.error('Supabase staff authentication error:', err);
+    console.warn('Network timeout or error, checking local records:', err);
   }
 
-  // 2. Secondary fallback (in-memory or local cache only)
+  // Fallback if the network times out or fails
   const fallbackFound = inMemoryAdmins.find(
     a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
   );
@@ -561,15 +554,17 @@ export async function authenticateAdmin(
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = usernameOrEmail.trim().toLowerCase();
 
-  // 1. Primary check: Query live Supabase
   try {
-    const { data: rows } = await supabase
+    // 2.5 second maximum wait time for Supabase
+    const query = supabase
       .from('admins')
       .select('*')
       .or(`email.ilike.${clean},username.ilike.${clean}`);
+      
+    const response = await queryWithTimeout(query, 2500);
 
-    if (rows && rows.length > 0) {
-      const found = rowToAdmin(rows[0]);
+    if (response && response.data && response.data.length > 0) {
+      const found = rowToAdmin(response.data[0]);
       if (found.status === 'suspended') {
         return { success: false, error: 'This administrator account is suspended.' };
       }
@@ -582,23 +577,18 @@ export async function authenticateAdmin(
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
       }
 
-      // Update in-memory cache to stay in sync
       const index = inMemoryAdmins.findIndex(a => a.id === found.id);
-      if (index !== -1) {
-        inMemoryAdmins[index] = found;
-      } else {
-        inMemoryAdmins = [...inMemoryAdmins, found];
-      }
+      if (index !== -1) inMemoryAdmins[index] = found;
+      else inMemoryAdmins.push(found);
       saveAdminsToLocalStorage();
-      window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
       return { success: true, admin: found };
     }
   } catch (err) {
-    console.error('Supabase admin authentication error:', err);
+    console.warn('Network timeout or error, checking local records:', err);
   }
 
-  // 2. Secondary fallback (in-memory, local cache, or default superadmin)
+  // Fallback if the network times out or fails
   const fallbackFound = inMemoryAdmins.find(
     a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
   );
@@ -615,7 +605,7 @@ export async function authenticateAdmin(
       return { success: true, admin: fallbackFound };
     }
   } else {
-    // Check fallback super admin credentials
+    // Check default super admin
     if (clean === 'admin@ifswafrica.com' && (!password || password.trim() === '199999')) {
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
@@ -708,7 +698,6 @@ export async function logAdminActivity(
   inMemoryLogs = [newLog, ...inMemoryLogs];
   notifyAdminLogsUpdated();
 
-  // Insert into Supabase
   try {
     await supabase.from('admin_activity_logs').insert([{
       admin_id: entry.adminId,
@@ -777,7 +766,6 @@ export async function changeAdminPassword(
   const admin = inMemoryAdmins[index];
   let newPass = newPasswordOrOld;
   if (optionalNewPassword !== undefined) {
-    // 3 argument call: (adminId, oldPass, newPass)
     if (admin.password && admin.password !== newPasswordOrOld.trim()) {
       return { success: false, error: 'Current password does not match.' };
     }
