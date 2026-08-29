@@ -490,32 +490,14 @@ export async function deleteRegistrationAdmin(id: string): Promise<{ success: bo
   return { success: true };
 }
 
-// Authentication methods optimized with a local-first fast-path (lag-free)
+// Authentication methods verified against Supabase
 export async function authenticateRegistrationStaff(
   identifier: string,
   password?: string
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = identifier.trim().toLowerCase();
   
-  // 1. FAST PATH: Check locally cached/in-memory staff first
-  const localFound = inMemoryAdmins.find(
-    a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
-  );
-
-  if (localFound) {
-    if (localFound.status === 'suspended') {
-      return { success: false, error: 'This staff account has been suspended by the Executive Administrator.' };
-    }
-    if (!password || (localFound.password && localFound.password === password.trim())) {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(localFound));
-        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, localFound.id);
-      }
-      return { success: true, admin: localFound };
-    }
-  }
-
-  // 2. SLOW FALLBACK: Query Supabase only if not found locally or password mismatch
+  // 1. Primary check: Query live Supabase
   try {
     const { data: rows } = await supabase
       .from('admins')
@@ -531,23 +513,43 @@ export async function authenticateRegistrationStaff(
         return { success: false, error: 'Incorrect staff credentials or access password.' };
       }
       
-      // Update session in sessionStorage and synchronize cache
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(found));
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
       }
       
-      // Merge into in-memory array if missing
-      if (!inMemoryAdmins.some(a => a.id === found.id)) {
+      // Update in-memory cache to stay in sync
+      const index = inMemoryAdmins.findIndex(a => a.id === found.id);
+      if (index !== -1) {
+        inMemoryAdmins[index] = found;
+      } else {
         inMemoryAdmins = [...inMemoryAdmins, found];
-        saveAdminsToLocalStorage();
-        window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
       }
+      saveAdminsToLocalStorage();
+      window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
       return { success: true, admin: found };
     }
   } catch (err) {
     console.error('Supabase staff authentication error:', err);
+  }
+
+  // 2. Secondary fallback (in-memory or local cache only)
+  const fallbackFound = inMemoryAdmins.find(
+    a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
+  );
+
+  if (fallbackFound) {
+    if (fallbackFound.status === 'suspended') {
+      return { success: false, error: 'This staff account has been suspended by the Executive Administrator.' };
+    }
+    if (!password || (fallbackFound.password && fallbackFound.password === password.trim())) {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(fallbackFound));
+        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, fallbackFound.id);
+      }
+      return { success: true, admin: fallbackFound };
+    }
   }
 
   return { success: false, error: 'No registration staff profile found with this username or email.' };
@@ -559,34 +561,7 @@ export async function authenticateAdmin(
 ): Promise<{ success: boolean; admin?: RegistrationAdmin; error?: string }> {
   const clean = usernameOrEmail.trim().toLowerCase();
 
-  // 1. FAST PATH: Check locally cached/in-memory admin first
-  const localFound = inMemoryAdmins.find(
-    a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
-  );
-
-  if (localFound) {
-    if (localFound.status === 'suspended') {
-      return { success: false, error: 'This administrator account is suspended.' };
-    }
-    if (!password || (localFound.password && localFound.password === password.trim())) {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(localFound));
-        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, localFound.id);
-      }
-      return { success: true, admin: localFound };
-    }
-  } else {
-    // Check fallback super admin credentials
-    if (clean === 'admin@ifswafrica.com' && (!password || password.trim() === '199999')) {
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
-        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_SUPER_ADMIN.id);
-      }
-      return { success: true, admin: DEFAULT_SUPER_ADMIN };
-    }
-  }
-
-  // 2. SLOW FALLBACK: Query Supabase
+  // 1. Primary check: Query live Supabase
   try {
     const { data: rows } = await supabase
       .from('admins')
@@ -607,17 +582,47 @@ export async function authenticateAdmin(
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
       }
 
-      // Merge into in-memory array if missing
-      if (!inMemoryAdmins.some(a => a.id === found.id)) {
+      // Update in-memory cache to stay in sync
+      const index = inMemoryAdmins.findIndex(a => a.id === found.id);
+      if (index !== -1) {
+        inMemoryAdmins[index] = found;
+      } else {
         inMemoryAdmins = [...inMemoryAdmins, found];
-        saveAdminsToLocalStorage();
-        window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
       }
+      saveAdminsToLocalStorage();
+      window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
       return { success: true, admin: found };
     }
   } catch (err) {
     console.error('Supabase admin authentication error:', err);
+  }
+
+  // 2. Secondary fallback (in-memory, local cache, or default superadmin)
+  const fallbackFound = inMemoryAdmins.find(
+    a => a.email.toLowerCase() === clean || a.username.toLowerCase() === clean
+  );
+
+  if (fallbackFound) {
+    if (fallbackFound.status === 'suspended') {
+      return { success: false, error: 'This administrator account is suspended.' };
+    }
+    if (!password || (fallbackFound.password && fallbackFound.password === password.trim())) {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(fallbackFound));
+        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, fallbackFound.id);
+      }
+      return { success: true, admin: fallbackFound };
+    }
+  } else {
+    // Check fallback super admin credentials
+    if (clean === 'admin@ifswafrica.com' && (!password || password.trim() === '199999')) {
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
+        sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_SUPER_ADMIN.id);
+      }
+      return { success: true, admin: DEFAULT_SUPER_ADMIN };
+    }
   }
 
   return { success: false, error: 'Administrator not found in database.' };
