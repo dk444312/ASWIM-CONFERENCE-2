@@ -100,89 +100,103 @@ export function RegistrationDashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-[#f4f5f8] font-sans antialiased text-gray-900 overflow-hidden">
+    <div id="registration-dashboard-wrapper" className="flex h-screen bg-[#f4f7f5] font-sans antialiased text-gray-900 overflow-hidden selection:bg-[#06291a] selection:text-white">
       {/* Mobile Backdrop */}
       {isSidebarOpen && (
         <div 
+          id="registration-mobile-backdrop"
           onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-xs transition-opacity"
+          className="fixed inset-0 bg-[#06291a]/40 z-40 lg:hidden backdrop-blur-md transition-opacity duration-300"
         />
       )}
 
-      {/* Sidebar */}
+      {/* Redesigned Sidebar Container */}
       <aside 
-        className={`fixed lg:static top-0 bottom-0 left-0 z-50 bg-[#062217] text-white flex flex-col transition-all duration-300 ${
-          isCollapsed ? 'lg:w-[90px]' : 'lg:w-[280px]'
+        id="registration-sidebar-aside"
+        className={`fixed lg:static top-0 bottom-0 left-0 z-50 bg-[#051c11] text-white flex flex-col transition-all duration-300 ease-in-out ${
+          isCollapsed ? 'lg:w-[88px]' : 'lg:w-[280px]'
         } w-[280px] ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } shadow-xl lg:shadow-none`}
+        } shadow-[8px_0_32px_rgba(4,41,26,0.12)] lg:shadow-none border-r border-emerald-950/40`}
       >
         {/* Sidebar Header & Brand */}
-        <div className="h-[74px] px-6 flex items-center justify-between border-b border-white/10 relative">
-          <Link to="/" className="flex items-center gap-3 overflow-hidden">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 p-0.5 shadow-md shrink-0 flex items-center justify-center font-bold text-white text-xs">
-              IFSW
+        <div id="registration-sidebar-header" className="h-[74px] px-6 flex items-center justify-between border-b border-emerald-950/60 relative">
+          <Link to="/" id="registration-header-logo-link" className="flex items-center gap-3 overflow-hidden group">
+            <div id="registration-logo-badge" className="w-9 h-9 rounded-xl bg-white p-1.5 shadow-md shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
+              <img 
+                src="/IFSW LOGO.jpg" 
+                alt="IFSW Logo" 
+                className="w-full h-full object-contain" 
+              />
             </div>
             {!isCollapsed && (
-              <div className="overflow-hidden">
-                <div className="font-extrabold text-sm tracking-wide text-white font-heading truncate">IFSW Africa 2027</div>
-                <div className="text-[10px] text-[#e4bd4d] font-bold tracking-wider uppercase truncate">Registrations Portal</div>
+              <div id="registration-header-text" className="overflow-hidden flex flex-col">
+                <span className="font-black text-xs tracking-tight text-white font-heading truncate leading-none">
+                  IFSW Africa 2027
+                </span>
+                <span className="text-[9px] text-[#c59c34] font-black tracking-widest uppercase mt-1 leading-none">
+                  Officer Gateway
+                </span>
               </div>
             )}
           </Link>
 
           {/* Desktop collapse button */}
           <button 
+            id="registration-sidebar-collapse-btn"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex absolute -right-3.5 top-7 bg-white text-gray-700 rounded-full p-1 shadow-md hover:text-brand-green transition-colors border border-gray-200"
+            className="hidden lg:flex absolute -right-3 top-[22px] bg-white text-[#051c11] hover:bg-[#edf3ef] rounded-full p-1 shadow-md hover:text-emerald-700 transition-all border border-gray-200 z-50 hover:scale-110 active:scale-95"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
-            {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+            {isCollapsed ? <ChevronRight size={14} className="stroke-[3]" /> : <ChevronLeft size={14} className="stroke-[3]" />}
           </button>
 
           {/* Mobile close button */}
           <button 
+            id="registration-sidebar-close-btn"
             onClick={() => setIsSidebarOpen(false)}
-            className="lg:hidden text-white/70 hover:text-white"
+            className="lg:hidden p-1.5 rounded-lg text-emerald-300 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Authenticated Officer Mini Card */}
-        {!isCollapsed ? (
-          <div className="p-4 border-b border-white/10 flex items-center gap-3 bg-white/5">
-            <div className="w-11 h-11 rounded-xl overflow-hidden bg-brand-green text-white font-extrabold text-xs shrink-0 flex items-center justify-center border border-white/20 shadow-xs">
-              {authStaff.name ? authStaff.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'AD'}
-            </div>
-            <div className="overflow-hidden flex-1">
-              <Link to="/registration/settings" className="block hover:opacity-80 transition-opacity">
-                <h3 className="font-extrabold text-xs text-white truncate">
-                  {authStaff.name}
-                </h3>
-                <div className="flex items-center gap-1 mt-0.5">
-                  <span className="px-1.5 py-0.2 rounded bg-emerald-700/60 text-emerald-200 font-mono text-[10px] font-bold">
-                    @{authStaff.username}
-                  </span>
-                </div>
-                <p className="text-[10px] text-emerald-300 font-medium truncate mt-0.5">
-                  {authStaff.role}
-                </p>
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <div className="py-4 flex justify-center border-b border-white/10">
-            <Link to="/registration/settings" title={`Officer: ${authStaff.name} (@${authStaff.username})`}>
-              <div className="w-10 h-10 rounded-xl overflow-hidden bg-brand-green text-white font-bold text-xs flex items-center justify-center border border-white/20">
+        <div id="registration-sidebar-officer" className="border-b border-emerald-950/60">
+          {!isCollapsed ? (
+            <div className="p-4.5 m-3 rounded-2xl bg-white/5 border border-white/5 flex items-center gap-3.5 transition-all hover:bg-white/10">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#c59c34] text-gray-950 font-black text-xs shrink-0 flex items-center justify-center border border-white/10 shadow-sm">
                 {authStaff.name ? authStaff.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'AD'}
               </div>
-            </Link>
-          </div>
-        )}
+              <div className="overflow-hidden flex-1">
+                <Link to="/registration/settings" className="block group">
+                  <h3 className="font-extrabold text-xs text-white truncate group-hover:text-emerald-300 transition-colors">
+                    {authStaff.name}
+                  </h3>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-900/60 text-emerald-200 font-mono text-[9px] font-bold">
+                      @{authStaff.username}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider truncate mt-1">
+                    {authStaff.role}
+                  </p>
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="py-4.5 flex justify-center">
+              <Link to="/registration/settings" title={`Officer: ${authStaff.name} (@${authStaff.username})`}>
+                <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#c59c34] text-gray-950 font-black text-xs flex items-center justify-center border border-white/10 shadow-md hover:scale-105 hover:rotate-3 transition-all">
+                  {authStaff.name ? authStaff.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'AD'}
+                </div>
+              </Link>
+            </div>
+          )}
+        </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
+        <nav id="registration-nav-menu" className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path === '/registration/dashboard' && location.pathname === '/registration');
             return (
@@ -190,19 +204,19 @@ export function RegistrationDashboard() {
                 key={item.name}
                 to={item.path}
                 onClick={() => setIsSidebarOpen(false)}
-                className={`flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all ${
+                className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-xs font-extrabold uppercase tracking-widest transition-all duration-200 relative ${
                   isActive 
-                    ? 'bg-brand-green text-white shadow-sm' 
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
-                } ${isCollapsed ? 'justify-center px-2' : ''}`}
+                    ? 'bg-emerald-900/60 text-white shadow-sm border-l-4 border-[#c59c34] pl-3' 
+                    : 'text-emerald-100/70 hover:bg-white/5 hover:text-white hover:pl-5'
+                } ${isCollapsed ? 'justify-center px-2 hover:pl-2' : ''}`}
                 title={isCollapsed ? item.name : undefined}
               >
-                <item.icon size={20} className={isActive ? 'text-white' : 'text-white/70 shrink-0'} />
+                <item.icon size={18} className={isActive ? 'text-white' : 'text-emerald-200/60 shrink-0'} />
                 {!isCollapsed && (
                   <span className="flex-1 truncate">{item.name}</span>
                 )}
                 {!isCollapsed && item.count !== null && (
-                  <span className="px-2 py-0.5 rounded-full text-[11px] bg-white/20 text-white font-mono font-bold">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/10 text-emerald-200 font-mono font-black">
                     {item.count}
                   </span>
                 )}
@@ -212,47 +226,48 @@ export function RegistrationDashboard() {
         </nav>
 
         {/* Footer Admin Console & Logout */}
-        <div className="p-3 border-t border-white/10 space-y-1 mt-auto">
+        <div id="registration-sidebar-footer" className="p-3 border-t border-emerald-950/60 bg-emerald-950/20 space-y-1">
           <Link
             to="/admin"
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-amber-300 hover:bg-white/10 transition-all ${
+            id="registration-link-admin-console"
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-amber-300 hover:bg-white/5 transition-all ${
               isCollapsed ? 'justify-center px-2' : ''
             }`}
             title={isCollapsed ? 'Admin Console & Logs' : undefined}
           >
             <ShieldCheck size={18} className="shrink-0 text-amber-400" />
-            {!isCollapsed && <span>Admin Console & Logs</span>}
+            {!isCollapsed && <span>Admin Terminal</span>}
           </Link>
 
           <Link
             to="/registration/support"
             onClick={() => setIsSidebarOpen(false)}
-            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-white/70 hover:bg-white/10 hover:text-white transition-all ${
-              location.pathname === '/registration/support' ? 'bg-white/15 text-white' : ''
+            className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-emerald-100/70 hover:bg-white/5 hover:text-white transition-all ${
+              location.pathname === '/registration/support' ? 'bg-white/10 text-white' : ''
             } ${isCollapsed ? 'justify-center px-2' : ''}`}
-            title={isCollapsed ? 'Help / Support Guide' : undefined}
+            title={isCollapsed ? 'Help & Manual' : undefined}
           >
             <HelpCircle size={18} className="shrink-0" />
-            {!isCollapsed && <span>Help / Support Guide</span>}
+            {!isCollapsed && <span>Help & Manual</span>}
           </Link>
 
           <button
             onClick={handleSignOut}
-            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-red-300 hover:bg-red-950/50 transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-red-400 hover:bg-red-950/30 hover:text-red-300 transition-all cursor-pointer ${
               isCollapsed ? 'justify-center px-2' : ''
             }`}
             title={isCollapsed ? 'Sign Out' : undefined}
           >
-            <LogOut size={18} className="shrink-0 text-red-400" />
+            <LogOut size={18} className="shrink-0 text-red-500" />
             {!isCollapsed && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+      <div id="registration-main-view-box" className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top Header Bar */}
-        <header className="h-[74px] bg-white border-b border-gray-200/80 flex items-center justify-between px-6 sm:px-8 shrink-0 relative z-20">
+        <header id="registration-header-bar" className="h-[74px] bg-white border-b border-gray-200/60 flex items-center justify-between px-6 sm:px-8 shrink-0 relative z-20 shadow-xs">
           <div className="flex items-center gap-3">
             {/* Mobile Hamburger */}
             <button

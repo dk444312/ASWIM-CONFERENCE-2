@@ -101,10 +101,10 @@ export function DashboardView() {
   }));
 
   const CATEGORY_COLORS: Record<string, string> = {
-    'International Delegate': '#0f766e',
+    'International Delegate': '#0d4e32',
     'Malawian Delegate': '#15803d',
-    'Student Delegate': '#d97706',
-    'Virtual Participant': '#6366f1',
+    'Student Delegate': '#c59c34',
+    'Virtual Participant': '#4f46e5',
     'Other': '#64748b'
   };
 
@@ -133,73 +133,71 @@ export function DashboardView() {
   const visaRequestsCount = registrations.filter(r => r.visaReq === 'Yes').length;
 
   return (
-    <div className="max-w-[1360px] mx-auto space-y-8 animate-in fade-in duration-300">
-      {/* Top Banner & Quick Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight font-heading">
-            Registration Management Dashboard
+    <div id="dashboard-view-root" className="max-w-[1360px] mx-auto space-y-8 animate-in fade-in duration-300">
+      
+      {/* Top Welcome Panel & Actions */}
+      <div id="dashboard-header-container" className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-gray-200/60 pb-6">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-black bg-[#06291a] text-white px-3 py-1 rounded-full uppercase tracking-wider">
+              Control Center
+            </span>
+            <span className="text-xs font-bold text-gray-400">
+              ID: {authStaff ? authStaff.id : 'N/A'}
+            </span>
+          </div>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight font-heading leading-tight mt-1">
+            Registration Management Console
           </h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Real-time delegate submissions, verification analytics, and continental attendance metrics for IFSW Africa 2027.
+          <p className="text-sm text-gray-500 font-medium max-w-2xl leading-relaxed">
+            Real-time delegate review, continental representation statistics, research abstracts clearance, and system configurations.
           </p>
         </div>
 
-        {authStaff && (
-          <div className="flex items-center gap-3 px-4 py-2.5 bg-white rounded-2xl border border-gray-200 shadow-2xs self-start sm:self-center">
-            <div className="w-9 h-9 rounded-xl bg-[#08281a] text-white font-extrabold text-xs flex items-center justify-center shrink-0">
-              {authStaff.name ? authStaff.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'AD'}
-            </div>
-            <div>
-              <div className="text-xs font-extrabold text-gray-900 leading-tight">
-                {authStaff.name}
-              </div>
-              <div className="text-[11px] font-bold text-brand-green">
-                @{authStaff.username} · {authStaff.role}
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="flex items-center gap-3">
+        {/* Action button pairings */}
+        <div id="dashboard-quick-actions" className="flex flex-wrap items-center gap-3">
           <Link
             to="/register"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-green text-white text-xs font-extrabold hover:bg-brand-green-2 transition-all shadow-sm active:scale-95"
+            id="action-btn-test-reg"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#06291a] text-white text-xs font-extrabold uppercase tracking-widest hover:bg-[#0a452c] transition-all duration-200 shadow-sm active:scale-95 group"
           >
-            <PlusCircle size={16} />
-            <span>Test Registration Form</span>
+            <PlusCircle size={15} className="transition-transform group-hover:rotate-90" />
+            <span>Launch Form</span>
           </Link>
           <Link
             to="/registration/delegates"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs font-bold hover:bg-gray-50 transition-all shadow-xs"
+            id="action-btn-review-list"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-200 bg-white text-gray-700 text-xs font-extrabold uppercase tracking-widest hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm active:scale-95"
           >
-            <Filter size={16} />
-            <span>Review Delegates</span>
+            <Filter size={15} />
+            <span>Review Queue</span>
           </Link>
         </div>
       </div>
 
-      {/* Live Public Portal Gateways Control Switches */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {/* Live Public Portal Gateways Hardware-Style Control Switches */}
+      <div id="dashboard-gateways-container" className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
         {/* Registration Toggle Switch */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div id="gateway-reg-card" className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row sm:items-center justify-between gap-5 transition-all hover:border-emerald-200">
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border ${
-              isOpen ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-colors duration-300 ${
+              isOpen ? 'bg-emerald-50 text-emerald-800 border-emerald-100' : 'bg-amber-50 text-amber-800 border-amber-100'
             }`}>
-              <UserPlus size={24} />
+              <UserPlus size={22} className="stroke-[2.5]" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-black text-gray-950">Registration Portal Status</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                  isOpen ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'
+            <div className="space-y-1">
+              <div className="flex items-center gap-2.5">
+                <span className="text-sm font-black text-gray-900 leading-none">Registration Portal Status</span>
+                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border ${
+                  isOpen ? 'bg-emerald-100/60 text-emerald-950 border-emerald-300/40' : 'bg-amber-100/60 text-amber-950 border-amber-300/40'
                 }`}>
-                  {isOpen ? 'OPEN' : 'CLOSED'}
+                  <span className={`w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-600 animate-ping' : 'bg-amber-600'}`} />
+                  {isOpen ? 'ONLINE' : 'OFFLINE'}
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-1 max-w-sm">
-                Control whether delegates can submit new registrations. Toggle to temporarily close the application form.
+              <p className="text-xs text-gray-500 leading-relaxed max-w-sm">
+                Allows practitioners to submit registration details and documents.
               </p>
             </div>
           </div>
@@ -210,42 +208,43 @@ export function DashboardView() {
               const next = toggleRegistrationOpen();
               setIsOpen(next);
             }}
-            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95 shrink-0 select-none ${
+            className={`flex items-center gap-3 px-5 py-3 rounded-2xl border text-xs font-extrabold uppercase tracking-widest transition-all duration-300 shadow-sm cursor-pointer active:scale-95 shrink-0 select-none ${
               isOpen
-                ? 'bg-amber-50 border-amber-300 text-amber-950 hover:bg-amber-100'
-                : 'bg-emerald-600 border-emerald-700 text-white hover:bg-emerald-700'
+                ? 'bg-amber-50 border-amber-200 hover:border-amber-300 text-amber-950 hover:bg-amber-100/50'
+                : 'bg-[#06291a] border-emerald-950 text-white hover:bg-[#0a452c]'
             }`}
           >
-            <div className={`w-8 h-4 rounded-full p-0.5 transition-colors relative flex items-center ${
-              isOpen ? 'bg-emerald-600' : 'bg-gray-400'
+            <div className={`w-8 h-4.5 rounded-full p-0.5 transition-colors duration-300 relative flex items-center ${
+              isOpen ? 'bg-emerald-600' : 'bg-gray-300'
             }`}>
-              <div className={`w-3 h-3 rounded-full bg-white shadow-xs transition-transform duration-200 ease-in-out ${
-                isOpen ? 'translate-x-4' : 'translate-x-0'
+              <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+                isOpen ? 'translate-x-3.5' : 'translate-x-0'
               }`} />
             </div>
-            <span>{isOpen ? 'Close Registration' : 'Open Registration'}</span>
+            <span>{isOpen ? 'Close Gate' : 'Open Gate'}</span>
           </button>
         </div>
 
         {/* Abstract Submissions Toggle Switch */}
-        <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div id="gateway-abstracts-card" className="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] flex flex-col sm:flex-row sm:items-center justify-between gap-5 transition-all hover:border-emerald-200">
           <div className="flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border ${
-              isAbstractsOpen ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-colors duration-300 ${
+              isAbstractsOpen ? 'bg-emerald-50 text-emerald-800 border-emerald-100' : 'bg-amber-50 text-amber-800 border-amber-100'
             }`}>
-              <BookOpen size={24} />
+              <BookOpen size={22} className="stroke-[2.5]" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-black text-gray-950">Abstract Submission Gate</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                  isAbstractsOpen ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'
+            <div className="space-y-1">
+              <div className="flex items-center gap-2.5">
+                <span className="text-sm font-black text-gray-900 leading-none">Abstract Submission Gate</span>
+                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border ${
+                  isAbstractsOpen ? 'bg-emerald-100/60 text-emerald-950 border-emerald-300/40' : 'bg-amber-100/60 text-amber-950 border-amber-300/40'
                 }`}>
-                  {isAbstractsOpen ? 'OPEN' : 'CLOSED'}
+                  <span className={`w-1.5 h-1.5 rounded-full ${isAbstractsOpen ? 'bg-emerald-600 animate-ping' : 'bg-amber-600'}`} />
+                  {isAbstractsOpen ? 'ONLINE' : 'OFFLINE'}
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-1 max-w-sm">
-                Control the gateway for academic and case abstract submissions. Toggle to block/allow new research paper entries.
+              <p className="text-xs text-gray-500 leading-relaxed max-w-sm">
+                Enables scholars to submit abstracts for active conference research tracks.
               </p>
             </div>
           </div>
@@ -256,155 +255,158 @@ export function DashboardView() {
               const next = toggleAbstractSubmissionOpen();
               setIsAbstractsOpen(next);
             }}
-            className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95 shrink-0 select-none ${
+            className={`flex items-center gap-3 px-5 py-3 rounded-2xl border text-xs font-extrabold uppercase tracking-widest transition-all duration-300 shadow-sm cursor-pointer active:scale-95 shrink-0 select-none ${
               isAbstractsOpen
-                ? 'bg-amber-50 border-amber-300 text-amber-950 hover:bg-amber-100'
-                : 'bg-emerald-600 border-emerald-700 text-white hover:bg-emerald-700'
+                ? 'bg-amber-50 border-amber-200 hover:border-amber-300 text-amber-950 hover:bg-amber-100/50'
+                : 'bg-[#06291a] border-emerald-950 text-white hover:bg-[#0a452c]'
             }`}
           >
-            <div className={`w-8 h-4 rounded-full p-0.5 transition-colors relative flex items-center ${
-              isAbstractsOpen ? 'bg-emerald-600' : 'bg-gray-400'
+            <div className={`w-8 h-4.5 rounded-full p-0.5 transition-colors duration-300 relative flex items-center ${
+              isAbstractsOpen ? 'bg-emerald-600' : 'bg-gray-300'
             }`}>
-              <div className={`w-3 h-3 rounded-full bg-white shadow-xs transition-transform duration-200 ease-in-out ${
-                isAbstractsOpen ? 'translate-x-4' : 'translate-x-0'
+              <div className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+                isAbstractsOpen ? 'translate-x-3.5' : 'translate-x-0'
               }`} />
             </div>
-            <span>{isAbstractsOpen ? 'Close Submissions' : 'Open Submissions'}</span>
+            <span>{isAbstractsOpen ? 'Close Gate' : 'Open Gate'}</span>
           </button>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div id="dashboard-kpis-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
         {/* Total Submissions */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xs hover:shadow-md transition-shadow">
+        <div id="kpi-total" className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-xs hover:-translate-y-0.5 hover:shadow-md hover:border-emerald-100 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-600">Total Submissions</span>
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-200">
-              <Users size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Total Ingested</span>
+            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-800 flex items-center justify-center border border-blue-100 shrink-0">
+              <Users size={16} className="stroke-[2.5]" />
             </div>
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-gray-950">{total}</span>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
-              Live Ingest
-            </span>
+          <div className="mt-5 space-y-1">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-3xl font-black text-gray-900">{total}</span>
+              <span className="text-[10px] font-black text-emerald-800 bg-emerald-100/60 px-2 py-0.5 rounded-md border border-emerald-200/40">
+                Live Data
+              </span>
+            </div>
+            <p className="text-xs text-gray-400 font-semibold leading-tight">Submitted applications in database</p>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Received via delegate registration form</p>
         </div>
 
         {/* Accepted Applications */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xs hover:shadow-md transition-shadow">
+        <div id="kpi-accepted" className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-xs hover:-translate-y-0.5 hover:shadow-md hover:border-emerald-100 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-600">Accepted Delegates</span>
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
-              <CheckCircle2 size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Accepted Delegates</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 shrink-0">
+              <CheckCircle2 size={16} className="stroke-[2.5]" />
             </div>
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-emerald-800">{accepted}</span>
-            <span className="text-xs font-semibold text-gray-500">
-              ({total > 0 ? Math.round((accepted / total) * 100) : 0}% clearance)
-            </span>
+          <div className="mt-5 space-y-1">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-3xl font-black text-emerald-800">{accepted}</span>
+              <span className="text-[10px] font-bold text-gray-500">
+                ({total > 0 ? Math.round((accepted / total) * 100) : 0}% clearance)
+              </span>
+            </div>
+            <p className="text-xs text-gray-400 font-semibold leading-tight">Cleared by subcommittee reviewers</p>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Cleared by secretariat committee</p>
         </div>
 
         {/* Pending Review */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xs hover:shadow-md transition-shadow">
+        <div id="kpi-pending" className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-xs hover:-translate-y-0.5 hover:shadow-md hover:border-emerald-100 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-600">Pending Review</span>
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
-              <Clock size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Pending Review</span>
+            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center border border-amber-100 shrink-0">
+              <Clock size={16} className="stroke-[2.5]" />
             </div>
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-amber-700">{pending}</span>
-            <span className="text-xs font-bold px-2 py-0.5 bg-amber-100 text-amber-900 rounded-full border border-amber-200">
-              Awaiting Action
-            </span>
+          <div className="mt-5 space-y-1">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-3xl font-black text-amber-700">{pending}</span>
+              {pending > 0 && (
+                <span className="text-[10px] font-black px-2 py-0.5 bg-amber-100/60 text-amber-950 rounded-md border border-amber-200/40 animate-pulse">
+                  Awaiting Action
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-gray-400 font-semibold leading-tight">Requires dossier and voucher audit</p>
           </div>
-          <p className="text-xs text-gray-500 mt-2">Profiles waiting for committee review</p>
         </div>
 
         {/* Admission Fee Status Card */}
-        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-xs hover:shadow-md transition-shadow">
+        <div id="kpi-sponsored" className="bg-white rounded-2xl p-6 border border-gray-200/80 shadow-xs hover:-translate-y-0.5 hover:shadow-md hover:border-emerald-100 transition-all duration-200 flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-600">Admission Fee Model</span>
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
-              <Sparkles size={20} />
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Admission Fee Model</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 shrink-0">
+              <Sparkles size={16} className="stroke-[2.5]" />
             </div>
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-2xl font-extrabold text-emerald-950">Free Admission</span>
-            <span className="text-xs font-bold px-2 py-0.5 bg-emerald-100 text-emerald-900 rounded-full border border-emerald-200">
-              Sponsored
-            </span>
+          <div className="mt-5 space-y-1">
+            <div className="flex items-baseline gap-2.5">
+              <span className="text-2xl font-black text-[#06291a]">Free / Sponsored</span>
+            </div>
+            <p className="text-xs text-gray-400 font-semibold leading-tight">Complimentary admission for 2027</p>
           </div>
-          <p className="text-xs text-gray-500 mt-2">All delegate categories complimentary for 2027</p>
         </div>
       </div>
 
       {/* Secondary Quick Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl p-4 border border-gray-200 flex items-center gap-3.5 shadow-xs">
-          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-200 shrink-0">
-            <Mic2 size={20} />
+      <div id="dashboard-micro-metrics" className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/80 flex items-center gap-4 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-800 flex items-center justify-center border border-purple-100 shrink-0">
+            <Mic2 size={18} className="stroke-[2.5]" />
           </div>
-          <div>
-            <div className="text-xs font-bold text-gray-500">Paper Presenters</div>
-            <div className="text-lg font-extrabold text-gray-900">{presentersCount} Abstracts Submitted</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4 border border-gray-200 flex items-center gap-3.5 shadow-xs">
-          <div className="w-11 h-11 rounded-xl bg-sky-50 text-sky-700 flex items-center justify-center border border-sky-200 shrink-0">
-            <Globe size={20} />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-gray-500">Visa Support Letters</div>
-            <div className="text-lg font-extrabold text-gray-900">{visaRequestsCount} Required</div>
+          <div className="space-y-0.5">
+            <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">Research Presenters</div>
+            <div className="text-sm font-black text-gray-900">{presentersCount} Scholars Submitted</div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-gray-200 flex items-center gap-3.5 shadow-xs">
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200 shrink-0">
-            <ShieldCheck size={20} />
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/80 flex items-center gap-4 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-sky-50 text-sky-800 flex items-center justify-center border border-sky-100 shrink-0">
+            <Globe size={18} className="stroke-[2.5]" />
           </div>
-          <div>
-            <div className="text-xs font-bold text-gray-500">Database Status</div>
-            <div className="text-lg font-extrabold text-emerald-700">Clean & Synchronized</div>
+          <div className="space-y-0.5">
+            <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">Visa Support Requests</div>
+            <div className="text-sm font-black text-gray-900">{visaRequestsCount} Assistance Needed</div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/80 flex items-center gap-4 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 shrink-0">
+            <ShieldCheck size={18} className="stroke-[2.5]" />
+          </div>
+          <div className="space-y-0.5">
+            <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">Local Database Engine</div>
+            <div className="text-sm font-black text-emerald-800">Clean & Operational</div>
           </div>
         </div>
       </div>
 
       {/* Analytics Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div id="dashboard-charts-row" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
         {/* Category Pie Chart */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm flex flex-col">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
             <div>
-              <h2 className="text-lg font-extrabold text-gray-900">Delegate Category Breakdown</h2>
-              <p className="text-xs text-gray-500">Distribution across International, Malawian, Student, and Virtual</p>
+              <h2 className="text-base font-black text-gray-950 uppercase tracking-wider">Delegate Category Distribution</h2>
+              <p className="text-xs text-gray-500 mt-1">Breakdown across International, Malawian, Student, and Virtual cohorts</p>
             </div>
-            <span className="text-xs font-bold bg-gray-100 text-gray-800 px-2.5 py-1 rounded-full">
+            <span className="text-[10px] font-black bg-gray-100 text-gray-800 px-3 py-1 rounded-md">
               {total} Total
             </span>
           </div>
 
           {total === 0 ? (
             <div className="h-[280px] w-full flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-gray-200 rounded-2xl my-2">
-              <Users size={36} className="text-gray-300 mb-2" />
-              <h4 className="text-xs font-extrabold text-gray-800">No Submissions Received Yet</h4>
+              <Users size={32} className="text-gray-300 mb-2" />
+              <h4 className="text-xs font-black text-gray-800 uppercase tracking-widest">No Submissions Ingested</h4>
               <p className="text-xs text-gray-500 mt-1 max-w-xs">
-                Submit your first registration form to see real-time category distributions.
+                Once delegates register, real-time statistics will compile and populate here.
               </p>
-              <Link
-                to="/register"
-                className="mt-3 text-xs font-bold text-brand-green hover:underline inline-flex items-center gap-1"
-              >
-                Open Registration Form →
-              </Link>
             </div>
           ) : (
             <div className="h-[280px] w-full mt-2">
@@ -414,7 +416,7 @@ export function DashboardView() {
                     data={categoryPieData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
+                    innerRadius={65}
                     outerRadius={100}
                     paddingAngle={4}
                     dataKey="value"
@@ -428,12 +430,12 @@ export function DashboardView() {
                   </Pie>
                   <Tooltip 
                     formatter={(value: any, name: any) => [`${value} Delegates (${Math.round(Number(value) / total * 100)}%)`, name]}
-                    contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', borderColor: '#e2e8f0', fontSize: '13px' }}
+                    contentStyle={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', fontSize: '12px', fontWeight: 'bold' }}
                   />
                   <Legend 
                     verticalAlign="bottom" 
                     height={36}
-                    formatter={(value) => <span className="text-xs text-gray-700 font-medium">{value}</span>}
+                    formatter={(value) => <span className="text-[10px] text-gray-600 font-extrabold uppercase tracking-wide">{value}</span>}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -442,23 +444,23 @@ export function DashboardView() {
         </div>
 
         {/* Review Status Donut Chart */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm flex flex-col">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
             <div>
-              <h2 className="text-lg font-extrabold text-gray-900">Application Review Status</h2>
-              <p className="text-xs text-gray-500">Acceptance pipeline and verification progression</p>
+              <h2 className="text-base font-black text-gray-950 uppercase tracking-wider">Application Review Pipeline</h2>
+              <p className="text-xs text-gray-500 mt-1">Acceptance and verification progression status metrics</p>
             </div>
-            <span className="text-xs font-bold bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-full border border-emerald-200">
+            <span className="text-[10px] font-black bg-emerald-50 text-emerald-950 border border-emerald-200 px-3 py-1 rounded-md">
               {accepted} Approved
             </span>
           </div>
 
           {total === 0 ? (
             <div className="h-[280px] w-full flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-gray-200 rounded-2xl my-2">
-              <Clock size={36} className="text-gray-300 mb-2" />
-              <h4 className="text-xs font-extrabold text-gray-800">Awaiting Applications</h4>
+              <Clock size={32} className="text-gray-300 mb-2" />
+              <h4 className="text-xs font-black text-gray-800 uppercase tracking-widest">Waiting for Applications</h4>
               <p className="text-xs text-gray-500 mt-1 max-w-xs">
-                As registrations arrive, review status breakdowns (Accepted, Pending, Rejected) will populate automatically.
+                Registration reviews will automatically populate the clearance metrics graph.
               </p>
             </div>
           ) : (
@@ -480,12 +482,12 @@ export function DashboardView() {
                   </Pie>
                   <Tooltip 
                     formatter={(value: any, name: any) => [`${value} Applications`, name]}
-                    contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', borderColor: '#e2e8f0', fontSize: '13px' }}
+                    contentStyle={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', fontSize: '12px', fontWeight: 'bold' }}
                   />
                   <Legend 
                     verticalAlign="bottom" 
                     height={36}
-                    formatter={(value) => <span className="text-xs text-gray-700 font-medium">{value}</span>}
+                    formatter={(value) => <span className="text-[10px] text-gray-600 font-extrabold uppercase tracking-wide">{value}</span>}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -495,41 +497,41 @@ export function DashboardView() {
       </div>
 
       {/* Track & Practice Area Bar Chart */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xs">
-        <div className="flex items-center justify-between mb-6">
+      <div id="dashboard-bar-chart" className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
           <div>
-            <h2 className="text-lg font-extrabold text-gray-900">Primary Practice Areas & Conference Interests</h2>
-            <p className="text-xs text-gray-500">Most represented thematic tracks among registered practitioners and scholars</p>
+            <h2 className="text-base font-black text-gray-950 uppercase tracking-wider">Thematic Conference Interests</h2>
+            <p className="text-xs text-gray-500 mt-1">Most represented social work practice tracks among registered delegates</p>
           </div>
-          <Link to="/registration/delegates" className="text-xs font-bold text-brand-green hover:underline flex items-center gap-1">
+          <Link to="/registration/delegates" className="text-xs font-black uppercase tracking-wider text-[#06291a] hover:text-[#c59c34] transition-colors flex items-center gap-1.5 self-start sm:self-center">
             <span>View All Delegates</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={15} />
           </Link>
         </div>
 
         {topPracticeData.length === 0 ? (
           <div className="h-[200px] w-full flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-gray-200 rounded-2xl">
-            <span className="text-xs font-bold text-gray-500">No practice track data available yet</span>
-            <span className="text-[11px] text-gray-400 mt-1">Submitted interest tags will render as a bar frequency chart here.</span>
+            <span className="text-xs font-black text-gray-400 uppercase tracking-widest">No Practice Tracks Registered Yet</span>
+            <span className="text-[11px] text-gray-400 mt-1">Submitted track interests will display as a bar chart frequency chart here.</span>
           </div>
         ) : (
           <div className="h-[260px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={topPracticeData} margin={{ top: 10, right: 20, left: -10, bottom: 20 }}>
+              <BarChart data={topPracticeData} margin={{ top: 10, right: 20, left: -15, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis 
                   dataKey="track" 
-                  tick={{ fontSize: 11, fill: '#64748b' }} 
+                  tick={{ fontSize: 10, fill: '#64748b', fontWeight: 'bold' }} 
                   interval={0}
                   angle={-10}
                   textAnchor="end"
                 />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                <YAxis allowDecimals={false} tick={{ fontSize: 10, fill: '#64748b', fontWeight: 'bold' }} />
                 <Tooltip 
-                  formatter={(val: any) => [`${val} Delegates`, 'Interest']}
-                  contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', borderColor: '#e2e8f0', fontSize: '13px' }}
+                  formatter={(val: any) => [`${val} Delegates`, 'Practice Track']}
+                  contentStyle={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e2e8f0', fontSize: '12px', fontWeight: 'bold' }}
                 />
-                <Bar dataKey="count" fill="#0f766e" radius={[6, 6, 0, 0]} maxBarSize={50} />
+                <Bar dataKey="count" fill="#0d4e32" radius={[6, 6, 0, 0]} maxBarSize={45} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -537,97 +539,99 @@ export function DashboardView() {
       </div>
 
       {/* Recent Submissions Ledger Table */}
-      <div className="bg-white rounded-3xl border border-gray-200 shadow-xs overflow-hidden">
-        <div className="p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div id="dashboard-ledger-table" className="bg-white rounded-3xl border border-gray-200/80 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-gray-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-extrabold text-gray-900">Recently Received Delegate Submissions</h2>
-            <p className="text-xs text-gray-500">Inspect full profiles, accept, or decline applications directly.</p>
+            <h2 className="text-base font-black text-gray-950 uppercase tracking-wider">Recent Submissions Ledger</h2>
+            <p className="text-xs text-gray-500 mt-1">Inspect profiles and credentials to authorize delegate admission.</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div>
             <Link
               to="/registration/submissions"
-              className="text-xs font-bold text-brand-green hover:text-brand-green-2 px-3.5 py-1.5 rounded-xl border border-brand-green/30 hover:bg-brand-green/5 transition-colors"
+              id="action-btn-submissions-ledger"
+              className="inline-flex items-center gap-1.5 px-4.5 py-2 rounded-2xl border border-emerald-300 bg-emerald-50/60 text-emerald-950 text-xs font-extrabold uppercase tracking-widest hover:bg-emerald-100 hover:border-emerald-400 transition-all duration-200"
             >
-              View Full Submissions Ledger →
+              <span>View Full Ledger</span>
+              <ArrowUpRight size={14} />
             </Link>
           </div>
         </div>
 
         {registrations.length === 0 ? (
-          <div className="p-12 text-center space-y-3">
+          <div className="p-12 text-center space-y-4">
             <AlertCircle size={36} className="text-gray-300 mx-auto" />
-            <h4 className="text-sm font-extrabold text-gray-800">No Submissions Ingested</h4>
-            <p className="text-xs text-gray-500 max-w-sm mx-auto">
-              The registrations database is ready and clean. Use the registration form to submit your own test applications.
+            <h4 className="text-xs font-black text-gray-800 uppercase tracking-widest">Database Ledger is Empty</h4>
+            <p className="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
+              No registration records found. Submit your first test registration to test out approval pipelines.
             </p>
             <Link
               to="/register"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-green text-white text-xs font-bold hover:bg-brand-green-2 transition-all shadow-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#06291a] text-white text-xs font-extrabold uppercase tracking-widest hover:bg-[#0a452c] transition-all shadow-xs"
             >
-              <PlusCircle size={14} /> Submit Test Registration
+              <PlusCircle size={14} /> Submit Application
             </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-gray-600">
-              <thead className="bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider">
+            <table className="w-full text-left text-xs text-gray-600 border-collapse">
+              <thead className="bg-gray-50 border-b border-gray-200/80 text-[10px] font-black text-gray-500 uppercase tracking-widest">
                 <tr>
-                  <th className="px-6 py-3.5">Submission ID</th>
-                  <th className="px-6 py-3.5">Applicant / Delegate</th>
-                  <th className="px-6 py-3.5">Country & Org</th>
-                  <th className="px-6 py-3.5">Category</th>
-                  <th className="px-6 py-3.5">Date & Time</th>
-                  <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5 text-right">Action Inside Profile</th>
+                  <th className="px-6 py-4">Submission ID</th>
+                  <th className="px-6 py-4">Applicant / Delegate</th>
+                  <th className="px-6 py-4">Country & Org</th>
+                  <th className="px-6 py-4">Category</th>
+                  <th className="px-6 py-4">Date & Time</th>
+                  <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {registrations.slice(0, 6).map((reg) => (
-                  <tr key={reg.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="px-6 py-4 font-mono text-xs font-bold text-gray-900">
+                  <tr key={reg.id} className="hover:bg-[#fcfdfc] transition-all duration-150">
+                    <td className="px-6 py-4.5 font-mono text-xs font-black text-emerald-900 bg-emerald-50/10">
                       {reg.id}
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-gray-900">{reg.title} {reg.fullName}</div>
-                      <div className="text-xs text-gray-500 font-mono">{reg.email}</div>
+                    <td className="px-6 py-4.5">
+                      <div className="font-extrabold text-gray-900 text-sm leading-tight">{reg.title} {reg.fullName}</div>
+                      <div className="text-[11px] text-gray-400 font-mono mt-0.5">{reg.email}</div>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="text-gray-900 font-semibold">{reg.country}</div>
-                      <div className="text-xs text-gray-500 truncate max-w-[200px]">{reg.org}</div>
+                    <td className="px-6 py-4.5">
+                      <div className="text-gray-900 font-extrabold text-xs">{reg.country}</div>
+                      <div className="text-[11px] text-gray-500 truncate max-w-[200px] mt-0.5 font-medium">{reg.org}</div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-block px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800 border border-gray-200">
+                    <td className="px-6 py-4.5">
+                      <span className="inline-block px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide bg-gray-50 border border-gray-200 text-gray-800">
                         {reg.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-600 whitespace-nowrap">
-                      <div>{new Date(reg.submittedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</div>
-                      <div className="text-gray-400 font-mono">{new Date(reg.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    <td className="px-6 py-4.5 text-[11px] text-gray-600 whitespace-nowrap">
+                      <div className="font-semibold text-gray-700">{new Date(reg.submittedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</div>
+                      <div className="text-gray-400 font-mono mt-0.5">{new Date(reg.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4.5">
                       {reg.status === 'accepted' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-950 border border-emerald-200">
                           <CheckCircle2 size={12} className="text-emerald-700" /> Accepted
                         </span>
                       )}
                       {reg.status === 'pending' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-amber-100 text-amber-950 border border-amber-300">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-950 border border-amber-200">
                           <Clock size={12} className="text-amber-700" /> Pending Review
                         </span>
                       )}
                       {reg.status === 'rejected' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-red-100 text-red-900 border border-red-300">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50/60 text-red-950 border border-red-200/50">
                           <XCircle size={12} className="text-red-700" /> Rejected
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                    <td className="px-6 py-4.5 text-right whitespace-nowrap">
                       <button
                         id={`review-submission-${reg.id}`}
                         onClick={() => setSelectedDelegate(reg)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-brand-green/10 hover:bg-brand-green hover:text-white text-brand-green text-xs font-extrabold transition-all active:scale-95"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 text-emerald-950 border border-emerald-200 hover:bg-[#06291a] hover:text-white hover:border-emerald-950 text-xs font-black uppercase tracking-wider transition-all duration-200 active:scale-95 cursor-pointer shadow-3xs"
                       >
-                        <Eye size={13} />
+                        <Eye size={13} className="stroke-[2.5]" />
                         <span>Inspect Profile</span>
                       </button>
                     </td>

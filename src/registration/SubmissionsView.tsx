@@ -128,56 +128,63 @@ export function SubmissionsView() {
   };
 
   return (
-    <div className="max-w-[1360px] mx-auto space-y-6 animate-in fade-in duration-300">
+    <div id="submissions-view-root" className="max-w-[1360px] mx-auto space-y-8 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+      <div id="submissions-header" className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-b border-gray-200/60 pb-6">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-black bg-[#06291a] text-white px-3 py-1 rounded-full uppercase tracking-wider">
+              Audit Trail
+            </span>
+          </div>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight font-heading mt-1">
             Submissions Audit Ledger
           </h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Chronological log of all submitted registration records with exact date, time, and verification status.
+          <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-2xl">
+            Chronological register tracking raw database registrations with immutable submission timestamps.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Link
             to="/register"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-green text-white text-xs font-bold hover:bg-brand-green-2 transition-all shadow-xs active:scale-95"
+            id="submissions-btn-launch"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#06291a] text-white text-xs font-extrabold uppercase tracking-widest hover:bg-[#0a452c] transition-all duration-200 shadow-sm active:scale-95"
           >
-            <PlusCircle size={16} />
-            <span>Test New Submission</span>
+            <PlusCircle size={15} />
+            <span>Launch Form</span>
           </Link>
           <button
             onClick={handleExportCSV}
             disabled={submissions.length === 0}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-800 text-xs font-bold hover:bg-gray-50 transition-all shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+            id="submissions-btn-export"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl border border-gray-200 bg-white text-gray-700 text-xs font-extrabold uppercase tracking-widest hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            <Download size={16} />
+            <Download size={15} />
             <span>Export CSV</span>
           </button>
         </div>
       </div>
 
       {submissions.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-gray-200 p-8 sm:p-12 text-center shadow-xs space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center mx-auto border border-brand-green/20">
-            <Calendar size={32} />
+        <div id="submissions-empty-card" className="bg-white rounded-3xl border border-gray-200 p-8 sm:p-12 text-center shadow-sm space-y-5">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-[#06291a] flex items-center justify-center mx-auto border border-emerald-100">
+            <Calendar size={30} className="stroke-[2]" />
           </div>
-          <div className="max-w-md mx-auto">
-            <h3 className="text-lg font-extrabold text-gray-900">
+          <div className="max-w-md mx-auto space-y-1">
+            <h3 className="text-lg font-black text-gray-900 uppercase tracking-wider">
               No Submissions Logged Yet
             </h3>
-            <p className="text-xs text-gray-600 mt-2 leading-relaxed">
-              All mock registrations have been cleared. As soon as delegates apply through the conference registration portal, each submission will be recorded here with millisecond timestamps and full profile details.
+            <p className="text-xs text-gray-500 leading-relaxed">
+              All mock registrations are fully cleared. Once a delegate applies, their submission will log in real time with exact timezone timestamps.
             </p>
           </div>
           <div className="pt-2">
             <Link
               to="/register"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-green hover:bg-brand-green-2 text-white font-extrabold text-xs transition-all shadow-sm active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#06291a] hover:bg-[#0a452c] text-white font-extrabold text-xs uppercase tracking-widest transition-all shadow-sm active:scale-95"
             >
-              <PlusCircle size={16} />
+              <PlusCircle size={15} />
               <span>Submit Test Delegate Application</span>
             </Link>
           </div>
@@ -185,24 +192,26 @@ export function SubmissionsView() {
       ) : (
         <>
           {/* Controls Bar */}
-          <div className="bg-white rounded-2xl p-4 sm:p-6 border border-gray-200 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div className="relative flex-1 min-w-[260px]">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          <div id="submissions-controls-bar" className="bg-white rounded-2xl p-4.5 border border-gray-200/80 shadow-xs flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input
+                id="submissions-search-input"
                 type="text"
-                placeholder="Search by ID, name, email, or institution..."
+                placeholder="Search ledger by transaction ID, candidate name, email, or company..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-xs font-medium text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-200 focus:bg-white rounded-xl text-xs font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#06291a]/10 focus:border-[#06291a] transition-all"
               />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               {/* Category Filter */}
               <select
+                id="submissions-category-select"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3.5 py-2 rounded-xl border border-gray-300 bg-white text-xs font-bold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                className="px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-xs font-extrabold text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#06291a]/10 focus:border-[#06291a] transition-all"
               >
                 <option value="all">All Categories</option>
                 <option value="International Delegate">International Delegate</option>
@@ -212,15 +221,15 @@ export function SubmissionsView() {
               </select>
 
               {/* Status Tabs */}
-              <div className="flex p-1 bg-gray-100 rounded-xl text-xs font-bold border border-gray-200">
+              <div id="submissions-status-filters" className="flex p-1 bg-gray-50 rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-200">
                 {(['all', 'pending', 'accepted', 'rejected'] as const).map((st) => (
                   <button
                     key={st}
                     onClick={() => setStatusFilter(st)}
-                    className={`px-3 py-1.5 rounded-lg capitalize transition-all ${
+                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                       statusFilter === st 
-                        ? 'bg-white text-gray-950 shadow-xs' 
-                        : 'text-gray-600 hover:text-gray-950'
+                        ? 'bg-[#06291a] text-white shadow-xs' 
+                        : 'text-gray-500 hover:text-gray-900'
                     }`}
                   >
                     {st}
@@ -230,29 +239,30 @@ export function SubmissionsView() {
 
               {/* Sort Order */}
               <button
+                id="submissions-sort-toggle"
                 onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-300 bg-white text-xs font-bold text-gray-700 hover:bg-gray-50 transition-all shadow-xs"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-xs font-extrabold text-gray-700 hover:bg-gray-50 transition-all shadow-xs cursor-pointer"
                 title="Toggle Timestamp Sort Order"
               >
-                <ArrowUpDown size={14} />
-                <span>{sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}</span>
+                <ArrowUpDown size={14} className="text-gray-500" />
+                <span className="uppercase tracking-wider text-[10px]">{sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}</span>
               </button>
             </div>
           </div>
 
           {/* Submissions Table */}
-          <div className="bg-white rounded-3xl border border-gray-200 shadow-xs overflow-hidden">
+          <div id="submissions-table-card" className="bg-white rounded-3xl border border-gray-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.01)] overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm text-gray-600">
-                <thead className="bg-gray-50 text-xs font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                <thead className="bg-gray-50/75 text-[10px] font-black text-gray-500 uppercase tracking-wider border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-4">Submission Ref</th>
-                    <th className="px-6 py-4">Submitted Date & Time</th>
-                    <th className="px-6 py-4">Applicant / Delegate</th>
-                    <th className="px-6 py-4">Category & Admission</th>
-                    <th className="px-6 py-4">Institution & Country</th>
-                    <th className="px-6 py-4">Verification Status</th>
-                    <th className="px-6 py-4 text-right">Inspect Profile</th>
+                    <th className="px-6 py-4.5">ID</th>
+                    <th className="px-6 py-4.5">Submitted timestamp</th>
+                    <th className="px-6 py-4.5">Candidate / Contact</th>
+                    <th className="px-6 py-4.5">Category</th>
+                    <th className="px-6 py-4.5">Institution & Country</th>
+                    <th className="px-6 py-4.5">Status</th>
+                    <th className="px-6 py-4.5 text-right">Dossier</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -261,23 +271,24 @@ export function SubmissionsView() {
                     return (
                       <tr 
                         key={sub.id} 
-                        className="hover:bg-gray-50/80 transition-colors group cursor-pointer"
+                        id={`submission-row-${sub.id}`}
+                        className="hover:bg-emerald-50/20 transition-all duration-150 group cursor-pointer"
                         onClick={() => setSelectedSubmission(sub)}
                       >
                         {/* ID */}
                         <td className="px-6 py-4">
-                          <span className="font-mono text-xs font-extrabold text-gray-900 bg-gray-100 px-2 py-1 rounded-md">
+                          <span className="font-mono text-[10px] font-black text-emerald-950 bg-emerald-50/70 px-2 py-1 rounded-md border border-emerald-100/40">
                             {sub.id}
                           </span>
                         </td>
 
                         {/* Date & Time */}
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center gap-1.5 text-xs font-bold text-gray-900">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-gray-950">
                             <Calendar size={13} className="text-gray-400" />
                             {dateStr}
                           </div>
-                          <div className="flex items-center gap-1.5 text-xs text-gray-500 font-mono mt-0.5">
+                          <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono mt-1">
                             <Clock size={12} className="text-gray-400" />
                             {timeStr}
                           </div>
@@ -285,12 +296,12 @@ export function SubmissionsView() {
 
                         {/* Delegate */}
                         <td className="px-6 py-4">
-                          <div className="font-bold text-gray-900 text-sm">
+                          <div className="font-black text-gray-900 text-sm">
                             {sub.title} {sub.fullName}
                           </div>
-                          <div className="text-xs text-gray-500 font-mono">{sub.email}</div>
+                          <div className="text-xs text-gray-500 font-semibold font-mono mt-0.5">{sub.email}</div>
                           {sub.isPresenter && (
-                            <span className="inline-block mt-1 text-[10px] font-extrabold px-2 py-0.5 rounded bg-purple-100 text-purple-900 border border-purple-200">
+                            <span className="inline-block mt-1.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-purple-50 text-purple-950 border border-purple-200">
                               Presenter
                             </span>
                           )}
@@ -298,37 +309,37 @@ export function SubmissionsView() {
 
                         {/* Category & Admission */}
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-800 border border-gray-200">
+                          <span className="inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-gray-100 border border-gray-200 text-gray-700">
                             {sub.category}
                           </span>
-                          <div className="text-[11px] font-extrabold text-emerald-800 mt-1 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            <span>Free Admission</span>
+                          <div className="text-[10px] font-black uppercase tracking-wider text-emerald-800 mt-1.5 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Cleared</span>
                           </div>
                         </td>
 
                         {/* Institution */}
                         <td className="px-6 py-4">
-                          <div className="text-xs font-bold text-gray-900 truncate max-w-[200px]">
+                          <div className="text-xs font-bold text-gray-950 truncate max-w-[180px]">
                             {sub.org}
                           </div>
-                          <div className="text-xs text-gray-500">{sub.country}</div>
+                          <div className="text-[11px] font-medium text-gray-400 mt-0.5">{sub.country}</div>
                         </td>
 
                         {/* Status */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           {sub.status === 'accepted' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-950 border border-emerald-200">
                               <CheckCircle2 size={12} className="text-emerald-700" /> Accepted
                             </span>
                           )}
                           {sub.status === 'pending' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-amber-100 text-amber-950 border border-amber-300">
-                              <Clock size={12} className="text-amber-700" /> Pending Review
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-950 border border-amber-200">
+                              <Clock size={12} className="text-amber-700" /> Reviewing
                             </span>
                           )}
                           {sub.status === 'rejected' && (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-red-100 text-red-900 border border-red-300">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-950 border border-red-200/50">
                               <XCircle size={12} className="text-red-700" /> Rejected
                             </span>
                           )}
@@ -342,11 +353,11 @@ export function SubmissionsView() {
                               e.stopPropagation();
                               setSelectedSubmission(sub);
                             }}
-                            className="inline-flex items-center gap-1 text-xs font-extrabold text-brand-green hover:text-brand-green-2 group-hover:underline px-3 py-1 rounded-lg hover:bg-brand-green/10 transition-colors"
+                            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-[#06291a] hover:text-[#0a452c] px-3 py-1.5 rounded-xl hover:bg-emerald-50 transition-colors cursor-pointer"
                           >
                             <Eye size={13} />
-                            <span>Inspect Profile</span>
-                            <ChevronRight size={13} />
+                            <span>Inspect</span>
+                            <ChevronRight size={13} className="text-[#06291a]/60 group-hover:translate-x-0.5 transition-transform" />
                           </button>
                         </td>
                       </tr>
@@ -357,8 +368,8 @@ export function SubmissionsView() {
             </div>
 
             {sortedAndFiltered.length === 0 && (
-              <div className="p-12 text-center text-gray-500 text-xs font-semibold">
-                No submissions found matching your search and filter criteria.
+              <div className="p-16 text-center text-gray-500 text-xs font-bold uppercase tracking-widest bg-gray-50/50 border-t border-gray-100">
+                No matching transactional logs found
               </div>
             )}
           </div>
