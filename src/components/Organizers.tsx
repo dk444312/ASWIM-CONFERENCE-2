@@ -1,10 +1,15 @@
+import { useLandingContent } from '../landing/landingContentStore';
+
 export function Organizers() {
+  const content = useLandingContent();
+  const { heading } = content.organizers;
+
   return (
     <section id="organizers" className="py-[110px] max-[650px]:py-[80px] bg-brand-sand/30 border-t border-brand-line">
       <div className="container-custom">
         <div className="text-center max-w-[680px] mx-auto mb-[60px]">
           <h2 className="text-[32px] max-[650px]:text-[28px] font-heading font-extrabold text-brand-ink leading-[1.05] tracking-tight">
-            Organizing Bodies
+            {heading}
           </h2>
         </div>
 
