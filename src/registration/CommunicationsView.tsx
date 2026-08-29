@@ -136,19 +136,19 @@ Lilongwe, Malawi`
   const recipientParam = searchParams.get('recipient');
   useEffect(() => {
     if (recipientParam) {
-      setSelectedEmail(recipientParam);
+      setSelectedEmail(prev => prev !== recipientParam ? recipientParam : prev);
       const found = registrations.find(r => r.email.toLowerCase() === recipientParam.toLowerCase()) || null;
       const initialType = found?.status === 'rejected' ? 'rejected' : 'accepted';
-      setDraftType(initialType);
+      setDraftType(prev => prev !== initialType ? initialType : prev);
       const draft = generateDraft(initialType, found);
-      setSubject(draft.subject);
-      setMessageBody(draft.body);
+      setSubject(prev => prev !== draft.subject ? draft.subject : prev);
+      setMessageBody(prev => prev !== draft.body ? draft.body : prev);
     } else {
       const draft = generateDraft(draftType, selectedDelegate);
-      setSubject(draft.subject);
-      setMessageBody(draft.body);
+      setSubject(prev => prev !== draft.subject ? draft.subject : prev);
+      setMessageBody(prev => prev !== draft.body ? draft.body : prev);
     }
-  }, [recipientParam, registrations.length]);
+  }, [recipientParam, registrations.length, draftType, selectedDelegate]);
 
   // When switching draft type (Accepted vs Rejected)
   const handleSelectDraftType = (type: 'accepted' | 'rejected') => {

@@ -159,9 +159,41 @@ export function rowToLog(row: any): AdminActivityLog {
   };
 }
 
+const LOCAL_ADMINS_CACHE_KEY = 'ifsw_admins_cache';
+
+export function saveAdminsToLocalStorage() {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      localStorage.setItem(LOCAL_ADMINS_CACHE_KEY, JSON.stringify(inMemoryAdmins));
+    } catch (e) {
+      console.error('Failed to cache admins in localStorage:', e);
+    }
+  }
+}
+
+export function loadAdminsFromLocalStorage() {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const cached = localStorage.getItem(LOCAL_ADMINS_CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          inMemoryAdmins = parsed;
+          window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load cached admins from localStorage:', e);
+    }
+  }
+}
+
 export async function initializeSupabaseAdminStore() {
   if (isAdminsStoreInitialized) return;
   isAdminsStoreInitialized = true;
+
+  // Pre-load from local cache to provide instant offline/fallback accounts
+  loadAdminsFromLocalStorage();
 
   try {
     // 1. Fetch all admins from Supabase
@@ -172,6 +204,7 @@ export async function initializeSupabaseAdminStore() {
 
     if (!adminErr && adminRows && adminRows.length > 0) {
       inMemoryAdmins = adminRows.map(rowToAdmin);
+      saveAdminsToLocalStorage();
       window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
     }
 
@@ -197,6 +230,7 @@ export async function initializeSupabaseAdminStore() {
           .order('created_at', { ascending: true });
         if (refreshed && refreshed.length > 0) {
           inMemoryAdmins = refreshed.map(rowToAdmin);
+          saveAdminsToLocalStorage();
           window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
         }
       })
@@ -233,6 +267,7 @@ export async function fetchFreshAdmins(): Promise<RegistrationAdmin[]> {
 
     if (!error && rows && rows.length > 0) {
       inMemoryAdmins = rows.map(rowToAdmin);
+      saveAdminsToLocalStorage();
       window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
     }
   } catch (e) {
@@ -311,6 +346,7 @@ export async function createRegistrationAdmin(data: {
 
   // Optimistic memory update
   inMemoryAdmins = [...inMemoryAdmins, newAdmin];
+  saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
   // Insert into Supabase
@@ -358,6 +394,7 @@ export async function updateRegistrationAdmin(
   };
 
   inMemoryAdmins[index] = updatedAdmin;
+  saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
   // Update in Supabase
@@ -394,6 +431,7 @@ export async function toggleAdminStatus(id: string): Promise<{ success: boolean;
   const admin = inMemoryAdmins[index];
   const newStatus: 'active' | 'suspended' = admin.status === 'active' ? 'suspended' : 'active';
   admin.status = newStatus;
+  saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
   try {
@@ -426,6 +464,7 @@ export async function deleteRegistrationAdmin(id: string): Promise<{ success: bo
   }
 
   inMemoryAdmins = inMemoryAdmins.filter(a => a.id !== id);
+  saveAdminsToLocalStorage();
   window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
 
   try {

@@ -58,7 +58,7 @@ export function AdminLogsView() {
   const adminParam = searchParams.get('admin');
   useEffect(() => {
     if (adminParam) {
-      setSelectedAdminId(adminParam);
+      setSelectedAdminId(prev => prev !== adminParam ? adminParam : prev);
     }
   }, [adminParam]);
 
