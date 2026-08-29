@@ -85,11 +85,29 @@ export function Header() {
           <a href="/#organizers" className="text-[13px] font-semibold text-[#3f4943] hover:text-brand-green" onClick={handleLinkClick}>Organizers</a>
           <a href="/#ifsw-region" className="text-[13px] font-semibold text-[#3f4943] hover:text-brand-green" onClick={handleLinkClick}>IFSW Region</a>
           
-          <Link to="/abstract-submission" className="text-[13px] font-semibold text-[#3f4943] hover:text-brand-green" onClick={handleLinkClick}>
-            Abstracts Submission
+          <Link 
+            to="/subthemes" 
+            className="text-[13px] font-semibold text-[#3f4943] hover:text-brand-green" 
+            onClick={handleLinkClick}
+          >
+            Sub-themes
           </Link>
 
-          <Link to="/register" onClick={handleLinkClick} className="bg-brand-green text-white text-[13px] font-semibold px-[19px] py-[12px] rounded-full text-center hover:bg-brand-green-2 transition-colors">Register →</Link>
+          <Link 
+            to="/abstract-submission" 
+            className="text-[13px] font-semibold text-[#3f4943] hover:text-brand-green" 
+            onClick={handleLinkClick}
+          >
+            Submit Abstract
+          </Link>
+
+          <Link 
+            to="/register" 
+            onClick={handleLinkClick} 
+            className="bg-brand-green text-white text-[13px] font-semibold px-[19px] py-[12px] rounded-full text-center hover:bg-brand-green-2 transition-colors shadow-xs"
+          >
+            Register →
+          </Link>
         </nav>
       </div>
     </header>

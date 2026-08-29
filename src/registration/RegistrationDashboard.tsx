@@ -75,19 +75,14 @@ export function RegistrationDashboard() {
     };
   }, []);
 
-  // If on /registration/login route, directly render RegistrationLoginPage
-  if (location.pathname === '/registration/login') {
-    return <RegistrationLoginPage />;
-  }
-
-  // If not authenticated, redirect to login page
-  if (!authStaff) {
-    return <Navigate to="/registration/login" replace />;
+  // If on /registration/login route or not authenticated, redirect to /admin/login
+  if (location.pathname === '/registration/login' || !authStaff) {
+    return <Navigate to="/admin/login" replace />;
   }
 
   const handleSignOut = () => {
     logoutRegistrationStaff();
-    navigate('/registration/login', { replace: true });
+    navigate('/admin/login', { replace: true });
   };
 
   const pendingCount = registrations.filter(r => r.status === 'pending').length;

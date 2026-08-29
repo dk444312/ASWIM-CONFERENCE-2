@@ -26,8 +26,8 @@ export function Footer() {
               <li className="text-white/60 text-[13px]"><a href="/#subcommittee" className="hover:text-white transition-colors">Subcommittee</a></li>
               <li className="text-white/60 text-[13px]"><a href="/#sponsors" className="hover:text-white transition-colors">Sponsors</a></li>
               <li className="text-white/60 text-[13px]"><a href="/#organizers" className="hover:text-white transition-colors">Organizers</a></li>
-              <li className="text-emerald-400 text-[13px] font-semibold"><a href="/registration/dashboard" className="hover:underline">Registrations Menu / Dashboard</a></li>
-              <li className="text-white/60 text-[13px]"><a href="/register" className="hover:text-white transition-colors">Online Registration Form</a></li>
+              <li className="text-brand-gold text-[13px] font-bold"><a href="/abstract-submission" className="hover:underline">Abstract Submission</a></li>
+              <li className="text-emerald-400 text-[13px] font-bold"><a href="/register" className="hover:underline">Delegate Registration</a></li>
             </ul>
           </div>
           <div>

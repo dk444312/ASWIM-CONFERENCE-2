@@ -301,12 +301,71 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
             </div>
           </div>
 
-          {/* Section 3: Delegate Category Logistics */}
+          {/* Section 3: Delegate Category & Attendance Mode */}
           <div className="border border-gray-200 rounded-2xl p-5 bg-white shadow-xs">
-            <h3 className="text-xs font-extrabold text-brand-green uppercase tracking-wider mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-brand-green"></span>
-              Step 3: Category Selection & Logistics ({delegate.category})
+            <h3 className="text-xs font-extrabold text-brand-green uppercase tracking-wider mb-4 flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-brand-green"></span>
+                Step 3: Category & Attendance ({delegate.category})
+              </span>
+              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                delegate.attendanceMode === 'Virtual' || delegate.category === 'Virtual Participant'
+                  ? 'bg-purple-100 text-purple-800' 
+                  : 'bg-emerald-100 text-emerald-800'
+              }`}>
+                Mode: {delegate.attendanceMode || (delegate.category === 'Virtual Participant' ? 'Virtual' : 'In-Person')}
+              </span>
             </h3>
+
+            {(delegate.category === 'IFSW Members' || delegate.category === 'Malawian Delegate') && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-500 block font-medium">Member Association</span>
+                  <span className="font-bold text-gray-900">{delegate.ifswName || 'ASWiM / National Association'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500 block font-medium">Association Country</span>
+                  <span className="font-semibold text-gray-900">{delegate.ifswCountry || delegate.country || 'Malawi'}</span>
+                </div>
+                <div>
+                  <span className="text-gray-500 block font-medium">IFSW Membership No.</span>
+                  <span className="font-semibold text-gray-900">{delegate.ifswNumber || 'Verified Active'}</span>
+                </div>
+                {delegate.district && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">District / Station</span>
+                    <span className="font-semibold text-gray-900">{delegate.district}</span>
+                  </div>
+                )}
+                {delegate.localTransport && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Local Commuter Transport</span>
+                    <span className="font-semibold text-gray-900">{delegate.localTransport}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {(delegate.category === 'Non-Members' || delegate.category === 'Virtual Participant') && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <span className="text-gray-500 block font-medium">Practice Sector / Organization</span>
+                  <span className="font-bold text-gray-900">{delegate.org || 'Independent Practitioner'}</span>
+                </div>
+                {delegate.timeZone && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Delegate Timezone</span>
+                    <span className="font-bold text-gray-900">{delegate.timeZone}</span>
+                  </div>
+                )}
+                {delegate.techReq && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Technical Accommodations</span>
+                    <span className="font-semibold text-gray-900">{delegate.techReq}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {delegate.category === 'International Delegate' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
@@ -345,19 +404,6 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
               </div>
             )}
 
-            {delegate.category === 'Malawian Delegate' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="text-gray-500 block font-medium">District of Origin / Station</span>
-                  <span className="font-bold text-gray-900">{delegate.district || 'Lilongwe'}</span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Local Commuter Transport Needed</span>
-                  <span className="font-semibold text-gray-900">{delegate.localTransport || 'No'}</span>
-                </div>
-              </div>
-            )}
-
             {delegate.category === 'Student Delegate' && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div>
@@ -371,19 +417,6 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
                 <div>
                   <span className="text-gray-500 block font-medium">Institution / University</span>
                   <span className="font-semibold text-gray-900">{delegate.studentInst || 'Registered University'}</span>
-                </div>
-              </div>
-            )}
-
-            {delegate.category === 'Virtual Participant' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="text-gray-500 block font-medium">Delegate Timezone</span>
-                  <span className="font-bold text-gray-900">{delegate.timeZone || 'UTC+2'}</span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Technical Access Requirements</span>
-                  <span className="font-semibold text-gray-900">{delegate.techReq || 'Standard Webcast Stream'}</span>
                 </div>
               </div>
             )}

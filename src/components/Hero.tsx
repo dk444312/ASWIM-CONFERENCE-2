@@ -28,7 +28,13 @@ export function Hero() {
               to="/register"
               className="bg-brand-green text-white font-extrabold text-[15px] px-[32px] py-[20px] rounded-[16px] hover:bg-brand-green-2 transition-colors shadow-lg border border-transparent hover:border-white/20 inline-flex items-center justify-center"
             >
-              {buttonText}
+              {buttonText || 'Register for Conference →'}
+            </Link>
+            <Link 
+              to="/abstract-submission"
+              className="bg-white/10 backdrop-blur-md text-white font-bold text-[15px] px-[28px] py-[20px] rounded-[16px] hover:bg-white/20 transition-colors border border-white/20 inline-flex items-center justify-center"
+            >
+              Submit Abstract Proposal →
             </Link>
           </div>
         </div>

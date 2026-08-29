@@ -21,12 +21,20 @@ export function Cta() {
         <p className="max-w-[620px] mx-auto mt-[22px] mb-[30px] text-white/70 text-[17px]">
           {description}
         </p>
-        <Link 
-          to="/register"
-          className="inline-flex border border-transparent bg-brand-gold text-[#15150f] px-[21px] py-[14px] rounded-full font-bold text-[13px] items-center gap-[9px] transition-all hover:-translate-y-0.5 hover:bg-[#e7bb45]"
-        >
-          {buttonText}
-        </Link>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link 
+            to="/register"
+            className="inline-flex border border-transparent bg-brand-gold text-[#15150f] px-[28px] py-[16px] rounded-full font-extrabold text-[14px] items-center gap-[9px] transition-all hover:-translate-y-0.5 hover:bg-[#e7bb45] shadow-lg"
+          >
+            {buttonText || 'Register for Conference →'}
+          </Link>
+          <Link 
+            to="/abstract-submission"
+            className="inline-flex border border-white/30 bg-white/10 backdrop-blur-md text-white px-[26px] py-[16px] rounded-full font-bold text-[14px] items-center gap-[9px] transition-all hover:-translate-y-0.5 hover:bg-white/20"
+          >
+            Submit Abstract Proposal →
+          </Link>
+        </div>
       </div>
     </section>
   );

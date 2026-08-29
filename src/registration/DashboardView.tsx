@@ -101,10 +101,12 @@ export function DashboardView() {
   }));
 
   const CATEGORY_COLORS: Record<string, string> = {
-    'International Delegate': '#0d4e32',
-    'Malawian Delegate': '#15803d',
+    'IFSW Members': '#0d4e32',
+    'Non-Members': '#4f46e5',
+    'International Delegate': '#0284c7',
     'Student Delegate': '#c59c34',
-    'Virtual Participant': '#4f46e5',
+    'Malawian Delegate': '#15803d',
+    'Virtual Participant': '#6366f1',
     'Other': '#64748b'
   };
 

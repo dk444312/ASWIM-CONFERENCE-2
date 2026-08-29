@@ -203,8 +203,8 @@ export function AdminLoginPage() {
               Conference Home
             </Link>
             <span>•</span>
-            <Link to="/register" className="hover:text-gray-800 transition-colors">
-              Delegate Registration
+            <Link to="/abstract-submission" className="hover:text-gray-800 transition-colors">
+              Abstract Submissions
             </Link>
           </div>
         </div>

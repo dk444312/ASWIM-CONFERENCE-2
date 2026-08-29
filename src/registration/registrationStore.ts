@@ -40,7 +40,8 @@ export interface RegistrationData {
   interests: string[];
 
   // Step 3: Category
-  category: 'International Delegate' | 'Malawian Delegate' | 'Student Delegate' | 'Virtual Participant' | string;
+  category: 'IFSW Members' | 'Non-Members' | 'International Delegate' | 'Student Delegate' | 'Malawian Delegate' | 'Virtual Participant' | string;
+  attendanceMode?: 'In-Person' | 'Virtual' | string;
   feeAmount: number;
   // International
   arrivalDate?: string;
@@ -168,7 +169,8 @@ export function rowToRegistration(row: any): RegistrationData {
     interests: Array.isArray(row.interests) ? row.interests : [],
 
     // Step 3: Category
-    category: row.category || 'Malawian Delegate',
+    category: row.category || 'IFSW Members',
+    attendanceMode: row.attendance_mode || (row.category === 'Virtual Participant' || row.time_zone ? 'Virtual' : 'In-Person'),
     feeAmount: Number(row.fee_amount || 0),
     arrivalDate: row.arrival_date || undefined,
     arrivalTime: row.arrival_time || undefined,
@@ -263,6 +265,7 @@ export function registrationToRow(data: Partial<RegistrationData>): any {
   if (data.interests !== undefined) row.interests = data.interests;
 
   if (data.category !== undefined) row.category = data.category;
+  if (data.attendanceMode !== undefined) row.attendance_mode = data.attendanceMode;
   if (data.feeAmount !== undefined) row.fee_amount = data.feeAmount;
 
   if (data.arrivalDate) row.arrival_date = data.arrivalDate || null;

@@ -196,10 +196,10 @@ export function DelegatesView() {
                 className="px-3.5 py-2 rounded-xl border border-gray-200 bg-white text-xs font-extrabold text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#06291a]/10 focus:border-[#06291a] transition-all"
               >
                 <option value="all">All Categories</option>
+                <option value="IFSW Members">IFSW Members</option>
+                <option value="Non-Members">Non-Members</option>
                 <option value="International Delegate">International Delegate</option>
-                <option value="Malawian Delegate">Malawian Delegate</option>
                 <option value="Student Delegate">Student Delegate</option>
-                <option value="Virtual Participant">Virtual Participant</option>
               </select>
             </div>
           </div>
