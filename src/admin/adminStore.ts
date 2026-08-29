@@ -554,6 +554,7 @@ export async function authenticateRegistrationStaff(
     if (typeof window !== 'undefined' && window.sessionStorage) {
       sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(DEFAULT_REGISTRATION_ADMIN));
       sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_REGISTRATION_ADMIN.id);
+      window.dispatchEvent(new CustomEvent('ifsw_auth_staff_changed'));
     }
     return { success: true, admin: DEFAULT_REGISTRATION_ADMIN };
   }
@@ -579,6 +580,7 @@ export async function authenticateRegistrationStaff(
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(found));
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
+        window.dispatchEvent(new CustomEvent('ifsw_auth_staff_changed'));
       }
       
       const index = inMemoryAdmins.findIndex(a => a.id === found.id);
@@ -605,6 +607,7 @@ export async function authenticateRegistrationStaff(
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_STAFF_SESSION_KEY, JSON.stringify(fallbackFound));
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, fallbackFound.id);
+        window.dispatchEvent(new CustomEvent('ifsw_auth_staff_changed'));
       }
       return { success: true, admin: fallbackFound };
     }
@@ -624,6 +627,7 @@ export async function authenticateAdmin(
     if (typeof window !== 'undefined' && window.sessionStorage) {
       sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_SUPER_ADMIN));
       sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_SUPER_ADMIN.id);
+      window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
     }
     return { success: true, admin: DEFAULT_SUPER_ADMIN };
   }
@@ -631,6 +635,7 @@ export async function authenticateAdmin(
     if (typeof window !== 'undefined' && window.sessionStorage) {
       sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(DEFAULT_REGISTRATION_ADMIN));
       sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, DEFAULT_REGISTRATION_ADMIN.id);
+      window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
     }
     return { success: true, admin: DEFAULT_REGISTRATION_ADMIN };
   }
@@ -656,6 +661,7 @@ export async function authenticateAdmin(
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(found));
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, found.id);
+        window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
       }
 
       const index = inMemoryAdmins.findIndex(a => a.id === found.id);
@@ -682,6 +688,7 @@ export async function authenticateAdmin(
       if (typeof window !== 'undefined' && window.sessionStorage) {
         sessionStorage.setItem(AUTH_ADMIN_SESSION_KEY, JSON.stringify(fallbackFound));
         sessionStorage.setItem(CURRENT_ACTIVE_ADMIN_KEY, fallbackFound.id);
+        window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
       }
       return { success: true, admin: fallbackFound };
     }
@@ -694,7 +701,13 @@ export function getAuthenticatedStaff(): RegistrationAdmin | null {
   if (typeof window === 'undefined' || !window.sessionStorage) return inMemoryAdmins[0] || DEFAULT_SUPER_ADMIN;
   try {
     const raw = sessionStorage.getItem(AUTH_STAFF_SESSION_KEY);
-    if (!raw) return null;
+    if (!raw) {
+      const adminRaw = sessionStorage.getItem(AUTH_ADMIN_SESSION_KEY);
+      if (adminRaw) {
+        return JSON.parse(adminRaw);
+      }
+      return null;
+    }
     return JSON.parse(raw);
   } catch {
     return null;
@@ -726,12 +739,18 @@ export function getCurrentActiveAdmin(): RegistrationAdmin {
 export function logoutStaff() {
   if (typeof window !== 'undefined' && window.sessionStorage) {
     sessionStorage.removeItem(AUTH_STAFF_SESSION_KEY);
+    sessionStorage.removeItem(AUTH_ADMIN_SESSION_KEY);
+    window.dispatchEvent(new CustomEvent('ifsw_auth_staff_changed'));
+    window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
   }
 }
 
 export function logoutAdmin() {
   if (typeof window !== 'undefined' && window.sessionStorage) {
+    sessionStorage.removeItem(AUTH_STAFF_SESSION_KEY);
     sessionStorage.removeItem(AUTH_ADMIN_SESSION_KEY);
+    window.dispatchEvent(new CustomEvent('ifsw_auth_staff_changed'));
+    window.dispatchEvent(new CustomEvent('ifsw_auth_admin_changed'));
   }
 }
 

@@ -60,12 +60,14 @@ export function RegistrationDashboard() {
   useEffect(() => {
     loadData();
     window.addEventListener('ifsw_auth_staff_changed', loadData);
+    window.addEventListener('ifsw_auth_admin_changed', loadData);
     window.addEventListener('ifsw_active_admin_changed', loadData);
     window.addEventListener('ifsw_registrations_updated', loadData);
     window.addEventListener('ifsw_registration_status_changed', loadData);
     window.addEventListener('ifsw_abstracts_open_status_changed', loadData);
     return () => {
       window.removeEventListener('ifsw_auth_staff_changed', loadData);
+      window.removeEventListener('ifsw_auth_admin_changed', loadData);
       window.removeEventListener('ifsw_active_admin_changed', loadData);
       window.removeEventListener('ifsw_registrations_updated', loadData);
       window.removeEventListener('ifsw_registration_status_changed', loadData);
