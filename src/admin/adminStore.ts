@@ -79,19 +79,47 @@ export const DEFAULT_SUPER_ADMIN: RegistrationAdmin = {
   accessPin: '1999'
 };
 
+// Default Registration Secretariat Admin fallback model
+export const DEFAULT_REGISTRATION_ADMIN: RegistrationAdmin = {
+  id: 'REG-2027-002',
+  username: 'admin@registration.com',
+  password: 'admin#1',
+  name: 'Registration Secretariat Lead',
+  email: 'admin@registration.com',
+  phone: '+265 888 111 2027',
+  role: 'Chief Registration Admin',
+  department: 'Registration Secretariat',
+  location: 'Lilongwe, Malawi',
+  status: 'active',
+  permissions: [
+    'approve_delegates', 
+    'reject_delegates', 
+    'send_notices', 
+    'export_reports', 
+    'manage_admins', 
+    'system_config', 
+    'edit_cms',
+    'edit_data'
+  ],
+  createdAt: '2026-08-01T00:00:00.000Z',
+  lastActiveAt: new Date().toISOString(),
+  actionsCount: 0,
+  accessPin: '1111'
+};
+
 const AUTH_STAFF_SESSION_KEY = 'ifsw_session_staff';
 const AUTH_ADMIN_SESSION_KEY = 'ifsw_session_admin';
 const CURRENT_ACTIVE_ADMIN_KEY = 'ifsw_current_admin_id';
 const LOCAL_ADMINS_CACHE_KEY = 'ifsw_admins_cache';
 
 // In-memory runtime state synced with Supabase
-let inMemoryAdmins: RegistrationAdmin[] = [DEFAULT_SUPER_ADMIN];
+let inMemoryAdmins: RegistrationAdmin[] = [DEFAULT_SUPER_ADMIN, DEFAULT_REGISTRATION_ADMIN];
 let inMemoryLogs: AdminActivityLog[] = [];
 let isAdminsStoreInitialized = false;
 let isRealtimeInitialized = false;
 
 // Helper: Safety Timer for Network Requests
-async function queryWithTimeout<T>(promise: Promise<T>, ms = 2500): Promise<T | null> {
+async function queryWithTimeout(promise: any, ms = 2500): Promise<any | null> {
   let timeoutId: ReturnType<typeof setTimeout>;
   const timeoutPromise = new Promise<null>((resolve) => {
     timeoutId = setTimeout(() => resolve(null), ms);
@@ -190,10 +218,22 @@ export function loadAdminsFromLocalStorage() {
       if (cached) {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          inMemoryAdmins = parsed;
+          const merged = [...parsed];
+          // Ensure both default fallback super admin and fallback registration admin are always in cache
+          if (!merged.some(a => a.email.toLowerCase() === DEFAULT_SUPER_ADMIN.email.toLowerCase())) {
+            merged.push(DEFAULT_SUPER_ADMIN);
+          }
+          if (!merged.some(a => a.email.toLowerCase() === DEFAULT_REGISTRATION_ADMIN.email.toLowerCase())) {
+            merged.push(DEFAULT_REGISTRATION_ADMIN);
+          }
+          inMemoryAdmins = merged;
           window.dispatchEvent(new CustomEvent('ifsw_registration_admins_changed'));
+          return;
         }
       }
+      // If no cache, initialize with the pre-configured default fallback admins
+      inMemoryAdmins = [DEFAULT_SUPER_ADMIN, DEFAULT_REGISTRATION_ADMIN];
+      saveAdminsToLocalStorage();
     } catch (e) {
       console.error('Failed to load cached admins from localStorage:', e);
     }
@@ -500,7 +540,7 @@ export async function authenticateRegistrationStaff(
       .select('*')
       .or(`email.ilike.${clean},username.ilike.${clean}`);
       
-    const response = await queryWithTimeout(query, 2500);
+    const response = (await queryWithTimeout(query, 2500)) as { data: any[] | null; error: any } | null;
 
     if (response && response.data && response.data.length > 0) {
       const found = rowToAdmin(response.data[0]);
@@ -561,7 +601,7 @@ export async function authenticateAdmin(
       .select('*')
       .or(`email.ilike.${clean},username.ilike.${clean}`);
       
-    const response = await queryWithTimeout(query, 2500);
+    const response = (await queryWithTimeout(query, 2500)) as { data: any[] | null; error: any } | null;
 
     if (response && response.data && response.data.length > 0) {
       const found = rowToAdmin(response.data[0]);
