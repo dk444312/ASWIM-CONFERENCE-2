@@ -4,6 +4,7 @@ import { useLandingContent } from '../landing/landingContentStore';
 export function Hero() {
   const content = useLandingContent();
   const { badge, titlePart1, titleHighlight, titlePart2, description, buttonText } = content.hero;
+  const heroBadge = badge || 'CONFERENCE THEME';
 
   return (
     <section className="pt-[40px] max-[650px]:pt-[30px] min-h-[820px] max-[650px]:min-h-[900px] text-white relative overflow-hidden flex flex-col justify-center bg-[linear-gradient(0deg,rgba(15,15,15,0.92)_0%,rgba(15,15,15,0.82)_50%,rgba(15,15,15,0.90)_100%),url('/Hero.png')] bg-center bg-cover">
@@ -12,7 +13,7 @@ export function Hero() {
       <div className="container-custom min-h-[700px] max-[650px]:min-h-[790px] flex items-center justify-center relative z-20">
         <div className="max-w-[860px] py-[75px] pb-[110px] max-[650px]:pt-[70px] text-center flex flex-col items-center">
           <div className="inline-flex items-center gap-[10px] uppercase tracking-[.17em] text-[12px] font-bold text-gray-200 mb-6 bg-white/10 px-4 py-1.5 rounded-full border border-white/15 backdrop-blur-xs">
-            {badge}
+            {heroBadge}
           </div>
 
           <h1 className="text-[clamp(50px,7vw,96px)] max-[650px]:text-[48px] max-w-[900px] font-extrabold tracking-tight leading-[1.08] mx-auto">

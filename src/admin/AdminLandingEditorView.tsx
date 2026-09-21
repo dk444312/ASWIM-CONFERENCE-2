@@ -383,7 +383,7 @@ export function AdminLandingEditorView() {
                     value={content.hero.badge}
                     onChange={(e) => handleFieldChange('hero', 'badge', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-                    placeholder="e.g. Joint IFSW Africa Region and ASSWA Conference · 2027"
+                    placeholder="e.g. CONFERENCE THEME"
                   />
                 </div>
 

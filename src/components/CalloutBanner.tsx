@@ -9,49 +9,49 @@ export function CalloutBanner() {
       date: "1 October 2026",
       type: "open",
       icon: Calendar,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Super Early Bird Registration",
       date: "1st October - 31st December 2026",
       type: "promo",
       icon: Flame,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Early Bird Registration",
       date: "1st January - 30th April 2027",
       type: "promo",
       icon: Clock,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Standard Registration",
       date: "1st May to September 30th 2027",
       type: "normal",
       icon: Calendar,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Late Registration",
       date: "October 2027",
       type: "alert",
       icon: Clock,
-      accent: "text-red-700 bg-red-50 border-red-200"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Call for Abstracts Open",
       date: "1st October 2026",
       type: "open",
       icon: BookOpen,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     },
     {
       title: "Call for Abstracts Closed",
       date: "31st March, 2027",
       type: "close",
       icon: CheckCircle,
-      accent: "text-gray-900 bg-gray-100 border-gray-300"
+      accent: "text-white bg-black border-black shadow-2xs"
     }
   ];
 

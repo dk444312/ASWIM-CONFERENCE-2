@@ -104,7 +104,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
     location: "Lilongwe, Malawi"
   },
   hero: {
-    badge: "Joint IFSW Africa Region and ASSWA Conference · 2027",
+    badge: "CONFERENCE THEME",
     titlePart1: "Advancing",
     titleHighlight: "social justice",
     titlePart2: "for Africa.",
