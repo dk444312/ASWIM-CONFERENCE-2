@@ -317,41 +317,61 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
               </span>
             </h3>
 
-            {(delegate.category === 'IFSW Members' || delegate.category === 'Malawian Delegate') && (
+            {/* IFSW & ASSWA Members details */}
+            {(delegate.category === 'IFSW & ASSWA Members' || delegate.category === 'IFSW Members' || delegate.category === 'Malawian Delegate') && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block font-medium">Member Association</span>
-                  <span className="font-bold text-gray-900">{delegate.ifswName || 'ASWiM / National Association'}</span>
+                  <span className="text-gray-500 block font-medium">Affiliation / Organization</span>
+                  <span className="font-bold text-gray-900">{delegate.ifswName || delegate.asswaSchool || 'ASWiM / National Association / ASSWA School'}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block font-medium">Association Country</span>
+                  <span className="text-gray-500 block font-medium">Country of Body</span>
                   <span className="font-semibold text-gray-900">{delegate.ifswCountry || delegate.country || 'Malawi'}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block font-medium">IFSW Membership No.</span>
+                  <span className="text-gray-500 block font-medium">Membership / Staff ID No.</span>
                   <span className="font-semibold text-gray-900">{delegate.ifswNumber || 'Verified Active'}</span>
                 </div>
+                {delegate.ifswPosition && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Role / Position</span>
+                    <span className="font-semibold text-gray-900">{delegate.ifswPosition}</span>
+                  </div>
+                )}
+                {delegate.memberType && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Affiliation Type</span>
+                    <span className="font-semibold text-gray-900">{delegate.memberType}</span>
+                  </div>
+                )}
                 {delegate.district && (
                   <div>
                     <span className="text-gray-500 block font-medium">District / Station</span>
                     <span className="font-semibold text-gray-900">{delegate.district}</span>
                   </div>
                 )}
-                {delegate.localTransport && (
-                  <div>
-                    <span className="text-gray-500 block font-medium">Local Commuter Transport</span>
-                    <span className="font-semibold text-gray-900">{delegate.localTransport}</span>
-                  </div>
-                )}
               </div>
             )}
 
+            {/* Non-Members details */}
             {(delegate.category === 'Non-Members' || delegate.category === 'Virtual Participant') && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <span className="text-gray-500 block font-medium">Practice Sector / Organization</span>
+                  <span className="text-gray-500 block font-medium">Organization / Employer</span>
                   <span className="font-bold text-gray-900">{delegate.org || 'Independent Practitioner'}</span>
                 </div>
+                {delegate.orgType && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Organization Type</span>
+                    <span className="font-semibold text-gray-900">{delegate.orgType}</span>
+                  </div>
+                )}
+                {delegate.practiceSector && (
+                  <div>
+                    <span className="text-gray-500 block font-medium">Practice Sector</span>
+                    <span className="font-semibold text-gray-900">{delegate.practiceSector}</span>
+                  </div>
+                )}
                 {delegate.timeZone && (
                   <div>
                     <span className="text-gray-500 block font-medium">Delegate Timezone</span>
@@ -367,44 +387,8 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
               </div>
             )}
 
-            {delegate.category === 'International Delegate' && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-                <div>
-                  <span className="text-gray-500 block font-medium">Arrival Schedule</span>
-                  <span className="font-semibold text-gray-900">
-                    {delegate.arrivalDate || 'TBD'} {delegate.arrivalTime && `at ${delegate.arrivalTime}`} {delegate.arrivalFlight && `(Flight: ${delegate.arrivalFlight})`}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Departure Schedule</span>
-                  <span className="font-semibold text-gray-900">
-                    {delegate.depDate || 'TBD'} {delegate.depTime && `at ${delegate.depTime}`} {delegate.depFlight && `(Flight: ${delegate.depFlight})`}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Airport Shuttle Transfer</span>
-                  <span className="font-semibold text-gray-900">{delegate.airportTransfer || 'No'}</span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Accommodation Requested</span>
-                  <span className="font-semibold text-gray-900">
-                    {delegate.accReq || 'No'} {delegate.hotelCat && `(${delegate.hotelCat} — ${delegate.roomPref || 'Standard'})`}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Visa Support Letter</span>
-                  <span className="font-semibold text-gray-900">{delegate.visaReq || 'No'}</span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block font-medium">Passport Credentials</span>
-                  <span className="font-semibold text-gray-900">
-                    {delegate.passNum ? `${delegate.passNum} (Exp: ${delegate.passExp || 'N/A'})` : 'Not provided'}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {delegate.category === 'Student Delegate' && (
+            {/* Student Delegates details */}
+            {(delegate.category === 'Student Delegates' || delegate.category === 'Student Delegate') && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                 <div>
                   <span className="text-gray-500 block font-medium">Level of Study</span>
@@ -417,6 +401,49 @@ export function DelegateProfileModal({ delegate, onClose, onStatusUpdated }: Del
                 <div>
                   <span className="text-gray-500 block font-medium">Institution / University</span>
                   <span className="font-semibold text-gray-900">{delegate.studentInst || 'Registered University'}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Cross-border / International Travel Logistics across any category */}
+            {(delegate.isInternationalTravel === 'Yes' || delegate.category === 'International Delegate' || delegate.arrivalDate || delegate.visaReq === 'Yes') && (
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+                <span className="text-xs font-bold text-sky-800 uppercase tracking-wider block">
+                  ✈️ International Travel & Logistics Dossier
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                  <div>
+                    <span className="text-gray-500 block font-medium">Arrival Schedule</span>
+                    <span className="font-semibold text-gray-900">
+                      {delegate.arrivalDate || 'TBD'} {delegate.arrivalTime && `at ${delegate.arrivalTime}`} {delegate.arrivalFlight && `(Flight: ${delegate.arrivalFlight})`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 block font-medium">Departure Schedule</span>
+                    <span className="font-semibold text-gray-900">
+                      {delegate.depDate || 'TBD'} {delegate.depTime && `at ${delegate.depTime}`} {delegate.depFlight && `(Flight: ${delegate.depFlight})`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 block font-medium">Airport Shuttle Transfer</span>
+                    <span className="font-semibold text-gray-900">{delegate.airportTransfer || 'No'}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 block font-medium">Accommodation Requested</span>
+                    <span className="font-semibold text-gray-900">
+                      {delegate.accReq || 'No'} {delegate.hotelCat && `(${delegate.hotelCat} — ${delegate.roomPref || 'Standard'})`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 block font-medium">Visa Support Letter</span>
+                    <span className="font-semibold text-gray-900">{delegate.visaReq || 'No'}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 block font-medium">Passport Credentials</span>
+                    <span className="font-semibold text-gray-900">
+                      {delegate.passNum ? `${delegate.passNum} (Exp: ${delegate.passExp || 'N/A'}${delegate.passCountry ? ` • ${delegate.passCountry}` : ''})` : 'Not provided'}
+                    </span>
+                  </div>
                 </div>
               </div>
             )}

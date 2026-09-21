@@ -66,7 +66,11 @@ export function DelegatesView() {
       d.id.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus = statusFilter === 'all' || d.status === statusFilter;
-    const matchesCategory = categoryFilter === 'all' || d.category === categoryFilter;
+    const matchesCategory = 
+      categoryFilter === 'all' || 
+      d.category === categoryFilter ||
+      (categoryFilter === 'IFSW & ASSWA Members' && (d.category === 'IFSW Members' || d.category === 'IFSW & ASSWA Members')) ||
+      (categoryFilter === 'Student Delegates' && (d.category === 'Student Delegate' || d.category === 'Student Delegates'));
 
     return matchesSearch && matchesStatus && matchesCategory;
   });
@@ -196,10 +200,9 @@ export function DelegatesView() {
                 className="px-3.5 py-2 rounded-xl border border-gray-200 bg-white text-xs font-extrabold text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#06291a]/10 focus:border-[#06291a] transition-all"
               >
                 <option value="all">All Categories</option>
-                <option value="IFSW Members">IFSW Members</option>
-                <option value="Non-Members">Non-Members</option>
-                <option value="International Delegate">International Delegate</option>
-                <option value="Student Delegate">Student Delegate</option>
+                <option value="IFSW & ASSWA Members">1. IFSW & ASSWA Members</option>
+                <option value="Non-Members">2. Non-Members</option>
+                <option value="Student Delegates">3. Student Delegates</option>
               </select>
             </div>
           </div>

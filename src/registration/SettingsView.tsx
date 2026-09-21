@@ -39,7 +39,7 @@ export function SettingsView() {
 
   // Conference settings
   const [confSettings, setConfSettings] = useState({
-    conferenceName: 'IFSW Africa 2027 Regional Conference',
+    conferenceName: 'Joint IFSW Africa Region and ASSWA Conference 2027',
     venue: 'Bingu International Conference Centre (BICC), Lilongwe',
     earlyBirdDeadline: '2027-03-31',
     standardDeadline: '2027-06-15',
@@ -451,7 +451,7 @@ export function SettingsView() {
                   Operational Permissions & Privileges
                 </h2>
                 <p className="text-gray-500 mt-1 text-xs">
-                  Active capabilities granted to your account for the IFSW Africa 2027 Conference.
+                  Active capabilities granted to your account for the Joint IFSW Africa Region and ASSWA Conference 2027.
                 </p>
               </div>
 

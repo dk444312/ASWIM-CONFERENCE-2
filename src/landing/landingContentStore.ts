@@ -98,17 +98,17 @@ export interface LandingContent {
 
 export const DEFAULT_LANDING_CONTENT: LandingContent = {
   topbar: {
-    badgeText: "IFSW AFRICA 2027",
-    subtitle: "Regional Conference",
+    badgeText: "JOINT CONFERENCE 2027",
+    subtitle: "Joint IFSW Africa Region & ASSWA Conference",
     dates: "26–31 October 2027",
     location: "Lilongwe, Malawi"
   },
   hero: {
-    badge: "IFSW Africa Region Conference · 2027",
+    badge: "Joint IFSW Africa Region and ASSWA Conference · 2027",
     titlePart1: "Advancing",
     titleHighlight: "social justice",
     titlePart2: "for Africa.",
-    description: "A continental gathering of social workers, scholars, policymakers, communities and partners committed to building a more just, inclusive and sustainable Africa.",
+    description: "Tackling Crises and Conflict, Strengthening Resilience and Building Sustainable Communities",
     dates: "26–31 October 2027",
     location: "Lilongwe, Malawi",
     buttonText: "Register Now →"
@@ -116,7 +116,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
   about: {
     eyebrow: "A continental platform",
     heading: "Where Africa's social work community meets.",
-    description: "The IFSW Africa Region Conference 2027 brings together professionals and stakeholders from across Africa and beyond for dialogue, knowledge exchange, collaboration and collective action around social justice.",
+    description: "The Joint IFSW Africa Region and ASSWA Conference 2027 brings together professionals, educators, researchers, and stakeholders from across Africa and beyond for dialogue, knowledge exchange, collaboration and collective action around social justice.",
     quote: "“Advancing social justice for Africa” is a call to move from conversation to meaningful action."
   },
   stats: {
@@ -157,7 +157,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
   },
   subcommittee: {
     heading: "Organizing Subcommittee",
-    description: "Meet the dedicated team working to bring IFSW Africa 2027 to life.",
+    description: "Meet the dedicated team working to bring the Joint IFSW Africa Region and ASSWA Conference 2027 to life.",
     members: [
       { id: "sub-1", name: "Jacqueline Nambala", role: "Publicity Subcommittee", image: "/subcommittee/Jacqueline Nambala.jpg" },
       { id: "sub-2", name: "Joseph Kalelo", role: "Finance Subcommittee", image: "/subcommittee/Joseph Kalelo.jpg" },
@@ -175,7 +175,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
   },
   organizers: {
     heading: "Organizing Bodies",
-    description: "Co-hosted by the International Federation of Social Workers and the Association of Social Workers in Malawi."
+    description: "Co-hosted by the International Federation of Social Workers (IFSW Africa Region), Association of Schools of Social Work in Africa (ASSWA), and the Association of Social Workers in Malawi (ASWiM)."
   },
   cta: {
     watermark: "AFRICA",
@@ -185,9 +185,9 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
     buttonText: "Register Now →"
   },
   footer: {
-    brandTitle: "IFSW Africa 2027 Conference",
-    brandTagline: "Advancing social justice for Africa through professional solidarity, knowledge exchange and collective action.",
-    copyrightText: "© 2027 IFSW Africa Region Conference",
+    brandTitle: "Joint IFSW Africa Region &\nASSWA Conference 2027",
+    brandTagline: "Advancing social justice for Africa through professional solidarity, social work education, knowledge exchange and collective action.",
+    copyrightText: "© 2027 Joint IFSW Africa Region and ASSWA Conference",
     locationTagline: "Advancing social justice for Africa · Lilongwe, Malawi",
     contactEmail: "info@ifsw-africa2027.org"
   }

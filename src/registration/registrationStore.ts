@@ -40,10 +40,12 @@ export interface RegistrationData {
   interests: string[];
 
   // Step 3: Category
-  category: 'IFSW Members' | 'Non-Members' | 'International Delegate' | 'Student Delegate' | 'Malawian Delegate' | 'Virtual Participant' | string;
+  category: 'IFSW & ASSWA Members' | 'Non-Members' | 'Student Delegates' | 'IFSW Members' | 'International Delegate' | 'Student Delegate' | 'Malawian Delegate' | 'Virtual Participant' | string;
   attendanceMode?: 'In-Person' | 'Virtual' | string;
   feeAmount: number;
-  // International
+  
+  // International Travel / Cross-Border (Applicable across all categories)
+  isInternationalTravel?: 'Yes' | 'No' | string;
   arrivalDate?: string;
   arrivalTime?: string;
   arrivalFlight?: string;
@@ -58,17 +60,27 @@ export interface RegistrationData {
   passName?: string;
   passNum?: string;
   passExp?: string;
+  passCountry?: string;
   embassyName?: string;
   embassyLoc?: string;
-  // Malawi
+
+  // Member & Institution specifics
+  memberType?: string;
+  asswaSchool?: string;
+  orgType?: string;
+  practiceSector?: string;
+
+  // Malawi Local Logistics
   district?: string;
   localTransport?: string;
-  // Student
+
+  // Student details
   levelStudy?: string;
   progStudy?: string;
   studentInst?: string;
   studentIdFile?: string;
-  // Virtual
+
+  // Virtual details
   timeZone?: string;
   virtualSessions?: string[];
   techReq?: string;
@@ -169,9 +181,10 @@ export function rowToRegistration(row: any): RegistrationData {
     interests: Array.isArray(row.interests) ? row.interests : [],
 
     // Step 3: Category
-    category: row.category || 'IFSW Members',
+    category: row.category || 'IFSW & ASSWA Members',
     attendanceMode: row.attendance_mode || (row.category === 'Virtual Participant' || row.time_zone ? 'Virtual' : 'In-Person'),
     feeAmount: Number(row.fee_amount || 0),
+    isInternationalTravel: row.is_international_travel || (row.category === 'International Delegate' ? 'Yes' : 'No'),
     arrivalDate: row.arrival_date || undefined,
     arrivalTime: row.arrival_time || undefined,
     arrivalFlight: row.arrival_flight || undefined,
@@ -186,8 +199,13 @@ export function rowToRegistration(row: any): RegistrationData {
     passName: row.pass_name || undefined,
     passNum: row.pass_num || undefined,
     passExp: row.pass_exp || undefined,
+    passCountry: row.pass_country || undefined,
     embassyName: row.embassy_name || undefined,
     embassyLoc: row.embassy_loc || undefined,
+    memberType: row.member_type || undefined,
+    asswaSchool: row.asswa_school || undefined,
+    orgType: row.org_type || undefined,
+    practiceSector: row.practice_sector || undefined,
     district: row.district || undefined,
     localTransport: row.local_transport || undefined,
     levelStudy: row.level_study || undefined,
@@ -267,6 +285,7 @@ export function registrationToRow(data: Partial<RegistrationData>): any {
   if (data.category !== undefined) row.category = data.category;
   if (data.attendanceMode !== undefined) row.attendance_mode = data.attendanceMode;
   if (data.feeAmount !== undefined) row.fee_amount = data.feeAmount;
+  if (data.isInternationalTravel !== undefined) row.is_international_travel = data.isInternationalTravel;
 
   if (data.arrivalDate) row.arrival_date = data.arrivalDate || null;
   if (data.arrivalTime) row.arrival_time = data.arrivalTime || null;
@@ -282,8 +301,13 @@ export function registrationToRow(data: Partial<RegistrationData>): any {
   if (data.passName !== undefined) row.pass_name = data.passName || null;
   if (data.passNum !== undefined) row.pass_num = data.passNum || null;
   if (data.passExp) row.pass_exp = data.passExp || null;
+  if (data.passCountry !== undefined) row.pass_country = data.passCountry || null;
   if (data.embassyName !== undefined) row.embassy_name = data.embassyName || null;
   if (data.embassyLoc !== undefined) row.embassy_loc = data.embassyLoc || null;
+  if (data.memberType !== undefined) row.member_type = data.memberType || null;
+  if (data.asswaSchool !== undefined) row.asswa_school = data.asswaSchool || null;
+  if (data.orgType !== undefined) row.org_type = data.orgType || null;
+  if (data.practiceSector !== undefined) row.practice_sector = data.practiceSector || null;
   if (data.district !== undefined) row.district = data.district || null;
   if (data.localTransport !== undefined) row.local_transport = data.localTransport || null;
   if (data.levelStudy !== undefined) row.level_study = data.levelStudy || null;

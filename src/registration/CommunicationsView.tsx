@@ -83,14 +83,14 @@ export function CommunicationsView() {
 
       return {
         subject: delegate 
-          ? `Official Acceptance: IFSW Africa 2027 Conference - ${delegate.fullName}` 
-          : 'Official Acceptance: IFSW Africa 2027 Regional Conference',
+          ? `Official Acceptance: Joint IFSW Africa Region and ASSWA Conference 2027 - ${delegate.fullName}` 
+          : 'Official Acceptance: Joint IFSW Africa Region and ASSWA Conference 2027',
         body: `${recipientGreeting}
 
-We are pleased to formally confirm that your registration for the IFSW Africa 2027 Regional Conference has been accepted by the Organizing Committee.
+We are pleased to formally confirm that your registration for the Joint IFSW Africa Region and ASSWA Conference 2027 has been accepted by the Organizing Committee.
 
 Conference Details:
-- Dates: July 14 – 17, 2027
+- Dates: 26–31 October 2027
 - Venue: Bingu International Conference Centre (BICC), Lilongwe, Malawi${categoryLine}
 
 Next Steps:
@@ -102,7 +102,7 @@ We look forward to welcoming you to the Warm Heart of Africa.
 
 Warm regards,
 Registration & Credentials Committee
-IFSW Africa 2027 Regional Conference
+Joint IFSW Africa Region and ASSWA Conference 2027
 Lilongwe, Malawi`
       };
     } else {
@@ -111,11 +111,11 @@ Lilongwe, Malawi`
 
       return {
         subject: delegate 
-          ? `Registration Update: IFSW Africa 2027 Conference - ${delegate.fullName}` 
-          : 'Registration Update: IFSW Africa 2027 Regional Conference',
+          ? `Registration Update: Joint IFSW Africa Region and ASSWA Conference 2027 - ${delegate.fullName}` 
+          : 'Registration Update: Joint IFSW Africa Region and ASSWA Conference 2027',
         body: `${recipientGreeting}
 
-Thank you for your application to attend the IFSW Africa 2027 Regional Conference in Lilongwe, Malawi${refLine}.
+Thank you for your application to attend the Joint IFSW Africa Region and ASSWA Conference 2027 in Lilongwe, Malawi${refLine}.
 
 Due to venue capacity limits and category verification quotas, we regret to inform you that we are unable to approve your application for in-person attendance during this review cycle.
 
@@ -126,7 +126,7 @@ If you have questions or would like our secretariat to re-evaluate your applicat
 
 Sincerely,
 Registration Review Secretariat
-IFSW Africa 2027 Regional Conference
+Joint IFSW Africa Region and ASSWA Conference 2027
 Lilongwe, Malawi`
       };
     }

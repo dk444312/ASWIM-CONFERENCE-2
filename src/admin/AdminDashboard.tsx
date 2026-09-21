@@ -125,13 +125,13 @@ export function AdminDashboard() {
             <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 shadow-xs">
               <img 
                 src="/IFSW LOGO.jpg" 
-                alt="IFSW Africa 2027" 
+                alt="Joint IFSW & ASSWA Conference 2027" 
                 className="w-full h-full object-contain" 
               />
             </div>
             {!isCollapsed && (
               <div className="leading-tight truncate">
-                <div className="font-extrabold text-sm tracking-wide text-white">IFSW Africa 2027</div>
+                <div className="font-extrabold text-sm tracking-wide text-white">Joint IFSW & ASSWA 2027</div>
                 <div className="text-[10px] text-emerald-400 font-extrabold tracking-wider uppercase flex items-center gap-1">
                   <ShieldCheck size={12} />
                   <span>Admin Control</span>
@@ -288,7 +288,7 @@ export function AdminDashboard() {
 
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-950">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>IFSW 2027 Admin Console · Live Audit Active</span>
+              <span>Joint IFSW & ASSWA 2027 Admin Console · Live Audit Active</span>
             </div>
           </div>
 

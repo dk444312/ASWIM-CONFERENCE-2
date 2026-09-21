@@ -170,7 +170,7 @@ export function AbstractSubmissionPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fbfbfa] text-[#1a2e22]">
+    <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#1f1f1f]">
       <Topbar />
       <Header />
 
@@ -180,7 +180,7 @@ export function AbstractSubmissionPage() {
           <div className="mb-8">
             <Link 
               to="/" 
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-green hover:text-brand-green-2 transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-700 hover:text-black transition-colors"
             >
               <ArrowLeft size={16} />
               <span>Back to Home</span>
@@ -188,18 +188,18 @@ export function AbstractSubmissionPage() {
           </div>
 
           {!successRecord ? (
-            <div className="bg-white rounded-3xl border border-brand-line shadow-lg overflow-hidden">
+            <div className="bg-white rounded-3xl border border-gray-200 shadow-md overflow-hidden">
               {/* Header block */}
-              <div className="bg-[#042619] text-white p-8 sm:p-12 relative overflow-hidden">
-                <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 rounded-full bg-brand-gold/10 blur-3xl pointer-events-none"></div>
+              <div className="bg-[#18181b] text-white p-8 sm:p-12 relative overflow-hidden border-b border-neutral-800">
+                <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 rounded-full bg-white/5 blur-3xl pointer-events-none"></div>
                 <div className="relative z-10 space-y-3">
-                  <div className="px-3.5 py-1 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-[10px] font-black tracking-wider uppercase inline-block">
-                    IFSW Africa 2027
+                  <div className="px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-gray-200 text-[10px] font-black tracking-wider uppercase inline-block">
+                    Joint IFSW Africa Region & ASSWA Conference 2027
                   </div>
                   <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight font-heading">
                     Call for Abstracts
                   </h1>
-                  <p className="text-sm text-emerald-100 max-w-xl leading-relaxed">
+                  <p className="text-sm text-gray-300 max-w-xl leading-relaxed">
                     Submit your research proposals, workshop outlines, or poster ideas to share your valuable knowledge and experiences with Africa's social work community in Lilongwe, Malawi.
                   </p>
                 </div>
@@ -210,11 +210,11 @@ export function AbstractSubmissionPage() {
                 
                 {/* 1. Presenter Details Block */}
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div className="p-2 rounded-lg bg-brand-green/10 text-brand-green">
+                  <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+                    <div className="p-2 rounded-lg bg-gray-100 text-gray-900">
                       <UserCheck size={18} />
                     </div>
-                    <h2 className="text-lg font-black tracking-tight text-gray-900">
+                    <h2 className="text-lg font-black tracking-tight text-[#1f1f1f]">
                       Presenter Personal Profile
                     </h2>
                   </div>
@@ -231,7 +231,7 @@ export function AbstractSubmissionPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Your email address - will be used for all correspondence"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
 
@@ -243,7 +243,7 @@ export function AbstractSubmissionPage() {
                       <select
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       >
                         <option value="">Select Title (e.g. Mr, Dr, Prof, Ms)</option>
                         <option value="Mr.">Mr.</option>
@@ -270,7 +270,7 @@ export function AbstractSubmissionPage() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Your first name"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
 
@@ -285,7 +285,7 @@ export function AbstractSubmissionPage() {
                         value={surname}
                         onChange={(e) => setSurname(e.target.value)}
                         placeholder="Your surname"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
 
@@ -299,7 +299,7 @@ export function AbstractSubmissionPage() {
                         value={jobTitle}
                         onChange={(e) => setJobTitle(e.target.value)}
                         placeholder="Your profession"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
 
@@ -314,7 +314,7 @@ export function AbstractSubmissionPage() {
                         value={institutionAffiliation}
                         onChange={(e) => setInstitutionAffiliation(e.target.value)}
                         placeholder="e.g. University of Malawi, Malawi"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
                   </div>
@@ -322,11 +322,11 @@ export function AbstractSubmissionPage() {
 
                 {/* 2. Proposal Classification Block */}
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div className="p-2 rounded-lg bg-brand-green/10 text-brand-green">
+                  <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+                    <div className="p-2 rounded-lg bg-gray-100 text-gray-900">
                       <Globe size={18} />
                     </div>
-                    <h2 className="text-lg font-black tracking-tight text-gray-900">
+                    <h2 className="text-lg font-black tracking-tight text-[#1f1f1f]">
                       Theme & Proposal Classification
                     </h2>
                   </div>
@@ -341,7 +341,7 @@ export function AbstractSubmissionPage() {
                         required
                         value={themeSelection}
                         onChange={(e) => setThemeSelection(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       >
                         <option value="">-- Select the conference theme your proposal relates to --</option>
                         {CONFERENCES_THEMES.map((theme, i) => (
@@ -369,8 +369,8 @@ export function AbstractSubmissionPage() {
                             key={opt.id}
                             className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer ${
                               proposalType === opt.id 
-                                ? 'border-brand-green bg-brand-green/5 text-brand-green font-extrabold' 
-                                : 'border-gray-200 hover:border-gray-300'
+                                ? 'border-[#1f1f1f] bg-gray-50 text-[#1f1f1f] font-extrabold shadow-2xs' 
+                                : 'border-gray-200 hover:border-gray-300 bg-white text-gray-800'
                             }`}
                           >
                             <input
@@ -379,7 +379,7 @@ export function AbstractSubmissionPage() {
                               required
                               checked={proposalType === opt.id}
                               onChange={() => setProposalType(opt.id)}
-                              className="accent-brand-green"
+                              className="accent-gray-900"
                             />
                             <span className="text-xs tracking-tight">{opt.label}</span>
                           </label>
@@ -391,24 +391,24 @@ export function AbstractSubmissionPage() {
 
                 {/* 3. Abstract Details Block */}
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div className="p-2 rounded-lg bg-brand-green/10 text-brand-green">
+                  <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+                    <div className="p-2 rounded-lg bg-gray-100 text-gray-900">
                       <BookOpen size={18} />
                     </div>
-                    <h2 className="text-lg font-black tracking-tight text-gray-900">
+                    <h2 className="text-lg font-black tracking-tight text-[#1f1f1f]">
                       Information about the Abstract
                     </h2>
                   </div>
 
-                  <div className="bg-amber-50/70 rounded-2xl border border-amber-200/50 p-5 space-y-3">
+                  <div className="bg-gray-50 rounded-2xl border border-gray-200 p-5 space-y-3">
                     <div className="flex items-start gap-2.5">
-                      <AlertCircle size={18} className="text-amber-700 shrink-0 mt-0.5" />
-                      <div className="text-xs text-amber-900 leading-relaxed space-y-1.5">
-                        <p className="font-bold">Abstract Body Submission Rules</p>
+                      <AlertCircle size={18} className="text-gray-900 shrink-0 mt-0.5" />
+                      <div className="text-xs text-gray-700 leading-relaxed space-y-1.5">
+                        <p className="font-bold text-gray-900">Abstract Body Submission Rules</p>
                         <p>
                           The abstract body should include: the background to your area; its purpose; your methodology/approach; the results/conclusion and practice implications for social workers.
                         </p>
-                        <p className="font-semibold text-amber-950">
+                        <p className="font-semibold text-gray-950">
                           Please submit the material in English or French only. Note that the maximum number of words allowed for the abstract item is 250-300 words.
                         </p>
                       </div>
@@ -429,7 +429,7 @@ export function AbstractSubmissionPage() {
                         value={authorsAffiliation}
                         onChange={(e) => setAuthorsAffiliation(e.target.value)}
                         placeholder="e.g. Dr. Jane Doe (University of Lilongwe), Prof. John Smith (Amlas)"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
 
@@ -447,7 +447,7 @@ export function AbstractSubmissionPage() {
                         value={abstractTitle}
                         onChange={(e) => setAbstractTitle(e.target.value)}
                         placeholder="Enter abstract proposal title"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all font-bold"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all font-bold"
                       />
                     </div>
 
@@ -457,17 +457,17 @@ export function AbstractSubmissionPage() {
                         <label className="block text-xs font-extrabold uppercase tracking-wide text-gray-700">
                           Abstract Body (250-300 words) <span className="text-red-500">*</span>
                         </label>
-                        <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                        <span className={`text-xs font-black px-2.5 py-0.5 rounded-full ${
                           wordCount >= 250 && wordCount <= 300 
-                            ? 'bg-emerald-100 text-emerald-800' 
-                            : 'bg-amber-100 text-amber-800'
+                            ? 'bg-black text-white' 
+                            : 'bg-gray-200 text-gray-800'
                         }`}>
                           {wordCount} words
                         </span>
                       </div>
 
                       {/* Proposal Specific Guidance Indicator */}
-                      <p className="text-xs text-brand-green font-bold bg-brand-green/5 p-3 rounded-lg border border-brand-green/10">
+                      <p className="text-xs text-gray-700 font-semibold bg-gray-50 p-3 rounded-lg border border-gray-200">
                         {getProposalGuidance()}
                       </p>
 
@@ -477,7 +477,7 @@ export function AbstractSubmissionPage() {
                         value={abstractBody}
                         onChange={(e) => setAbstractBody(e.target.value)}
                         placeholder="Paste or write your abstract body here..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all font-sans leading-relaxed"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all font-sans leading-relaxed"
                       />
                     </div>
 
@@ -495,7 +495,7 @@ export function AbstractSubmissionPage() {
                         value={keywords}
                         onChange={(e) => setKeywords(e.target.value)}
                         placeholder="e.g. social justice, decolonisation, community practice, Malawi"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all"
                       />
                     </div>
                   </div>
@@ -503,11 +503,11 @@ export function AbstractSubmissionPage() {
 
                 {/* 4. Supporting Document Upload */}
                 <div className="space-y-6">
-                  <div className="flex items-center gap-3 border-b border-gray-100 pb-3">
-                    <div className="p-2 rounded-lg bg-brand-green/10 text-brand-green">
+                  <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
+                    <div className="p-2 rounded-lg bg-gray-100 text-gray-900">
                       <Upload size={18} />
                     </div>
-                    <h2 className="text-lg font-black tracking-tight text-gray-900">
+                    <h2 className="text-lg font-black tracking-tight text-[#1f1f1f]">
                       Supporting Document Format upload
                     </h2>
                   </div>
@@ -517,7 +517,7 @@ export function AbstractSubmissionPage() {
                   </p>
 
                   <div className="space-y-4">
-                    <div className="relative border-2 border-dashed border-gray-300 hover:border-brand-green transition-all rounded-2xl p-6 text-center bg-gray-50 hover:bg-brand-green/[0.02]">
+                    <div className="relative border-2 border-dashed border-gray-300 hover:border-black transition-all rounded-2xl p-6 text-center bg-gray-50 hover:bg-gray-100/50">
                       <input
                         type="file"
                         accept=".pdf,.doc,.docx,.zip,.x-zip-compressed"
@@ -526,7 +526,7 @@ export function AbstractSubmissionPage() {
                         disabled={uploadingFile}
                       />
                       <div className="space-y-2.5">
-                        <div className="w-11 h-11 rounded-full bg-brand-green/10 text-brand-green flex items-center justify-center mx-auto border border-brand-green/20">
+                        <div className="w-11 h-11 rounded-full bg-gray-200 text-gray-900 flex items-center justify-center mx-auto border border-gray-300">
                           {uploadingFile ? (
                             <Loader2 size={20} className="animate-spin" />
                           ) : (
@@ -534,7 +534,7 @@ export function AbstractSubmissionPage() {
                           )}
                         </div>
                         <div className="space-y-1">
-                          <p className="text-xs font-extrabold text-gray-800">
+                          <p className="text-xs font-extrabold text-gray-900">
                             {uploadingFile ? 'Uploading abstract document...' : 'Click or Drag document file to upload'}
                           </p>
                           <p className="text-[11px] text-gray-500">
@@ -545,10 +545,10 @@ export function AbstractSubmissionPage() {
                     </div>
 
                     {uploadedFileName && (
-                      <div className="flex items-center gap-3 p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-950 text-xs font-semibold">
-                        <FileCheck size={16} className="text-emerald-700 shrink-0" />
-                        <span className="flex-1 truncate">{uploadedFileName}</span>
-                        <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase">
+                      <div className="flex items-center gap-3 p-3.5 bg-gray-100 rounded-xl border border-gray-300 text-gray-950 text-xs font-semibold">
+                        <FileCheck size={16} className="text-gray-900 shrink-0" />
+                        <span className="flex-1 truncate font-medium">{uploadedFileName}</span>
+                        <span className="px-2 py-0.5 rounded-md bg-black text-white font-bold text-[10px] uppercase">
                           UPLOADED
                         </span>
                       </div>
@@ -564,10 +564,10 @@ export function AbstractSubmissionPage() {
                 </div>
 
                 {/* Form Submit Action Buttons */}
-                <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
                   <Link
                     to="/"
-                    className="text-xs font-extrabold uppercase tracking-wide text-gray-500 hover:text-gray-800 py-3"
+                    className="text-xs font-extrabold uppercase tracking-wide text-gray-500 hover:text-black py-3 transition-colors"
                   >
                     Cancel submission
                   </Link>
@@ -575,7 +575,7 @@ export function AbstractSubmissionPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting || uploadingFile}
-                    className="w-full sm:w-auto px-8 py-4 bg-brand-green text-white font-extrabold rounded-xl hover:bg-brand-green-2 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-8 py-4 bg-[#1f1f1f] text-white font-extrabold rounded-xl hover:bg-black transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
@@ -592,8 +592,8 @@ export function AbstractSubmissionPage() {
             </div>
           ) : (
             /* Submission Success Screen */
-            <div className="bg-white rounded-3xl border border-brand-line shadow-lg p-8 sm:p-12 text-center space-y-6">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto border border-emerald-200">
+            <div className="bg-white rounded-3xl border border-gray-200 shadow-lg p-8 sm:p-12 text-center space-y-6">
+              <div className="w-16 h-16 rounded-full bg-gray-100 text-black flex items-center justify-center mx-auto border border-gray-300">
                 <CheckCircle2 size={36} />
               </div>
 
@@ -602,23 +602,23 @@ export function AbstractSubmissionPage() {
                   Abstract Submitted Successfully!
                 </h2>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Thank you for submitting your abstract for the IFSW Africa Regional Conference 2027. Your proposal has been recorded in our conference database under the reference code below.
+                  Thank you for submitting your abstract for the Joint IFSW Africa Region and ASSWA Conference 2027. Your proposal has been recorded in our conference database under the reference code below.
                 </p>
               </div>
 
               <div className="max-w-xs mx-auto p-4 bg-gray-50 rounded-2xl border border-gray-200 text-center font-mono">
                 <div className="text-[10px] uppercase font-black tracking-widest text-gray-400">SUBMISSION REF</div>
-                <div className="text-xl font-black text-brand-green mt-1">
+                <div className="text-xl font-black text-black mt-1">
                   {successRecord.id}
                 </div>
               </div>
 
-              <div className="max-w-md mx-auto border-t border-gray-100 pt-6 text-left space-y-3.5 text-xs text-gray-600 bg-emerald-50/50 p-6 rounded-2xl border border-emerald-100/50">
-                <p className="font-extrabold text-emerald-950">Next Steps & Guidance:</p>
-                <ul className="list-disc list-inside space-y-1.5 leading-relaxed text-emerald-900">
-                  <li>An automated confirmation email has been sent to <strong className="text-emerald-950 font-bold">{successRecord.email}</strong>.</li>
+              <div className="max-w-md mx-auto border-t border-gray-100 pt-6 text-left space-y-3.5 text-xs text-gray-600 bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                <p className="font-extrabold text-gray-950">Next Steps & Guidance:</p>
+                <ul className="list-disc list-inside space-y-1.5 leading-relaxed text-gray-800">
+                  <li>An automated confirmation email has been sent to <strong className="text-black font-bold">{successRecord.email}</strong>.</li>
                   <li>Our technical subcommittee will review your abstract on its methodology, relevance to conference themes, and practice implications.</li>
-                  <li>Final abstract selection announcements will be made on or before <strong className="text-emerald-950 font-bold">April 30th, 2027</strong>.</li>
+                  <li>Final abstract selection announcements will be made on or before <strong className="text-black font-bold">April 30th, 2027</strong>.</li>
                 </ul>
               </div>
 
@@ -641,13 +641,13 @@ export function AbstractSubmissionPage() {
                     setFileUrl('');
                     setUploadedFileName('');
                   }}
-                  className="w-full sm:w-auto px-5 py-3 bg-white border border-gray-300 text-gray-800 text-xs font-bold rounded-xl hover:bg-gray-50 transition-all"
+                  className="w-full sm:w-auto px-5 py-3 bg-white border border-gray-300 text-gray-800 text-xs font-bold rounded-xl hover:bg-gray-100 transition-all cursor-pointer"
                 >
                   Submit Another Abstract
                 </button>
                 <Link
                   to="/"
-                  className="w-full sm:w-auto px-5 py-3 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-brand-green-2 transition-all flex items-center justify-center gap-1.5"
+                  className="w-full sm:w-auto px-5 py-3 bg-[#1f1f1f] text-white text-xs font-bold rounded-xl hover:bg-black transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Home size={14} />
                   <span>Return to Home</span>

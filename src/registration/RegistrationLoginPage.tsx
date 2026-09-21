@@ -75,10 +75,10 @@ export function RegistrationLoginPage() {
           </div>
           <div id="login-brand-meta" className="flex flex-col">
             <span className="text-white font-extrabold text-sm tracking-tight leading-none font-heading">
-              IFSW Africa 2027
+              Joint IFSW & ASSWA 2027
             </span>
             <span className="text-emerald-300 font-bold text-[10px] tracking-widest uppercase mt-0.5">
-              Conference Portal
+              Secretariat Portal
             </span>
           </div>
         </Link>
@@ -142,7 +142,7 @@ export function RegistrationLoginPage() {
 
             {/* Micro branding */}
             <div className="text-[10px] font-semibold text-emerald-300/60 uppercase tracking-widest border-t border-white/10 pt-4">
-              IFSW Africa Regional Council
+              Joint IFSW Africa Region & ASSWA Secretariat
             </div>
           </div>
 
@@ -277,7 +277,7 @@ export function RegistrationLoginPage() {
       {/* Modern Centered Footer */}
       <footer id="login-footer" className="w-full bg-white border-t border-emerald-100/50 py-5 text-center text-xs text-gray-500 flex flex-col sm:flex-row items-center justify-between px-6 sm:px-10 gap-3">
         <div id="login-footer-copy" className="font-semibold text-gray-400">
-          IFSW Africa 2027 · Lilongwe, Malawi
+          Joint IFSW Africa Region and ASSWA Conference 2027 · Lilongwe, Malawi
         </div>
         <div id="login-footer-links" className="flex items-center gap-5 text-gray-500 font-bold">
           <Link to="/" className="hover:text-emerald-800 transition-colors">

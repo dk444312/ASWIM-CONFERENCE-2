@@ -63,7 +63,7 @@ export function AdminLoginPage() {
             />
           </div>
           <div className="text-white font-extrabold text-sm tracking-tight font-heading">
-            IFSW Africa 2027
+            Joint IFSW & ASSWA 2027
           </div>
         </Link>
 
@@ -211,7 +211,7 @@ export function AdminLoginPage() {
       </main>
 
       <footer className="py-3 text-center text-xs text-gray-500 border-t border-gray-200 bg-white/50">
-        IFSW Africa 2027 · Lilongwe, Malawi
+        Joint IFSW Africa Region and ASSWA Conference 2027 · Lilongwe, Malawi
       </footer>
     </div>
   );

@@ -129,10 +129,10 @@ export function RegistrationDashboard() {
             {!isCollapsed && (
               <div id="registration-header-text" className="overflow-hidden flex flex-col">
                 <span className="font-black text-xs tracking-tight text-white font-heading truncate leading-none">
-                  IFSW Africa 2027
+                  Joint IFSW & ASSWA 2027
                 </span>
                 <span className="text-[9px] text-[#c59c34] font-black tracking-widest uppercase mt-1 leading-none">
-                  Officer Gateway
+                  Secretariat Portal
                 </span>
               </div>
             )}

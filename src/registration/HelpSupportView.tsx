@@ -184,7 +184,7 @@ export function HelpSupportView() {
         <div>
           <h3 className="text-base font-bold text-brand-ink">Need Direct Assistance from the Organizing Committee?</h3>
           <p className="text-xs text-gray-600 mt-1 max-w-xl">
-            Contact the IFSW Africa 2027 Secretariat Secretariat in Lilongwe, Malawi or submit a priority ticket for delegate database synchronization.
+            Contact the Joint IFSW Africa Region and ASSWA Conference 2027 Secretariat in Lilongwe, Malawi or submit a priority ticket for delegate database synchronization.
           </p>
           <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-gray-700 font-semibold">
             <span>Email: secretariat@ifsw-africa2027.org</span>

@@ -383,7 +383,7 @@ export function AdminLandingEditorView() {
                     value={content.hero.badge}
                     onChange={(e) => handleFieldChange('hero', 'badge', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
-                    placeholder="e.g. IFSW Africa Region Conference · 2027"
+                    placeholder="e.g. Joint IFSW Africa Region and ASSWA Conference · 2027"
                   />
                 </div>
 
@@ -867,7 +867,7 @@ export function AdminLandingEditorView() {
                     value={content.subcommittee.description}
                     onChange={(e) => handleFieldChange('subcommittee', 'description', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-medium focus:ring-2 focus:ring-emerald-500 outline-none"
-                    placeholder="Meet the dedicated team working to bring IFSW Africa 2027 to life."
+                    placeholder="Meet the dedicated team working to bring the Joint IFSW Africa Region and ASSWA Conference 2027 to life."
                   />
                 </div>
 
@@ -1046,7 +1046,7 @@ export function AdminLandingEditorView() {
                     value={content.topbar.badgeText}
                     onChange={(e) => handleFieldChange('topbar', 'badgeText', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-bold"
-                    placeholder="IFSW AFRICA 2027"
+                    placeholder="JOINT CONFERENCE 2027"
                   />
                 </div>
 
@@ -1057,7 +1057,7 @@ export function AdminLandingEditorView() {
                     value={content.topbar.subtitle}
                     onChange={(e) => handleFieldChange('topbar', 'subtitle', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs"
-                    placeholder="Regional Conference"
+                    placeholder="Joint IFSW Africa Region & ASSWA Conference"
                   />
                 </div>
 
@@ -1096,7 +1096,7 @@ export function AdminLandingEditorView() {
                     value={content.footer.brandTitle}
                     onChange={(e) => handleFieldChange('footer', 'brandTitle', e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-bold"
-                    placeholder="IFSW Africa 2027 Conference"
+                    placeholder="Joint IFSW Africa Region & ASSWA Conference 2027"
                   />
                 </div>
 
@@ -1118,7 +1118,7 @@ export function AdminLandingEditorView() {
                       value={content.footer.copyrightText}
                       onChange={(e) => handleFieldChange('footer', 'copyrightText', e.target.value)}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs"
-                      placeholder="© 2027 IFSW Africa Region Conference"
+                      placeholder="© 2027 Joint IFSW Africa Region and ASSWA Conference"
                     />
                   </div>
                   <div className="space-y-1.5">
